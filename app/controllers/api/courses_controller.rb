@@ -25,24 +25,9 @@ class Api::CoursesController < ApplicationController
 
     if params[:days]
       input_days = params[:days]
-      select_course = false
-      courses = courses.select do |course|
-        days_offered = ''
-        select_course = false
-        course.each do |key, value|
-          if key == 'offerings'
-            value.each do |offering|
-              first_letter_of_day = offering['day'][0]
-              days_offered += first_letter_of_day
-            end
-          end
-        end
-        select_course = true if days_offered == input_days
-      end
-      select_course
+      courses = Selector.courses_by_days(courses, input_days)
     end
 
-
-    render json: { count: courses.length, message: courses }
+    render json: { message: courses }
   end
 end

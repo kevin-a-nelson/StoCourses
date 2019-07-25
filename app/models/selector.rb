@@ -25,4 +25,21 @@ class Selector < ApplicationRecord
       course['level'] == level
     end
   end
+
+  def self.courses_by_days(courses, days)
+    select_course = false
+    courses.select do |course|
+      days_offered = ''
+      select_course = false
+      course.each do |key, value|
+        next unless key == 'offerings'
+
+        value.each do |offering|
+          first_letter_of_day = offering['day'][0]
+          days_offered += first_letter_of_day
+        end
+      end
+      select_course = true if days_offered == days
+    end
+  end
 end
