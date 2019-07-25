@@ -1,11 +1,9 @@
 class Selector < ApplicationRecord
-
-  def self.courses_by_department(courses, department)
+  def self.courses_with_department(courses, department)
     courses.select { |course| course['department'] == department }
   end
 
-  def self.courses_by_keyword(courses, keyword)
-    select_course = false
+  def self.courses_with_keyword(courses, keyword)
     courses.select do |course|
       select_course = false
       course.each do |_key, value|
@@ -20,14 +18,13 @@ class Selector < ApplicationRecord
     end
   end
 
-  def self.courses_by_level(courses, level)
+  def self.courses_with_level(courses, level)
     courses.select do |course|
       course['level'] == level
     end
   end
 
-  def self.courses_by_days(courses, days)
-    select_course = false
+  def self.courses_with_days(courses, days)
     courses.select do |course|
       days_offered = ''
       select_course = false
@@ -40,6 +37,19 @@ class Selector < ApplicationRecord
         end
       end
       select_course = true if days_offered == days
+    end
+  end
+
+  def self.courses_with_gereqs(courses, input_gereqs)
+    courses.select do |course|
+      select_course = false
+      next unless course['gereqs']
+
+      course['gereqs'].each do |gereq|
+        select_course = true if gereq == input_gereqs
+        break
+      end
+      select_course
     end
   end
 end

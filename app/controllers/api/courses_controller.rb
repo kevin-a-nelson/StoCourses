@@ -10,24 +10,29 @@ class Api::CoursesController < ApplicationController
 
     if params[:department]
       input_department = params[:department]
-      courses = Selector.courses_by_department(courses, input_department)
+      courses = Selector.courses_with_department(courses, input_department)
     end
 
     if params[:keyword]
       input_keyword = params[:keyword]
-      courses = Selector.courses_by_keyword(courses, input_keyword)
+      courses = Selector.courses_with_keyword(courses, input_keyword)
     end
 
     if params[:level]
       input_level = params[:level].to_i
-      courses = Selector.courses_by_level(courses, input_level)
+      courses = Selector.courses_with_level(courses, input_level)
     end
 
     if params[:days]
       input_days = params[:days]
-      courses = Selector.courses_by_days(courses, input_days)
+      courses = Selector.courses_with_days(courses, input_days)
     end
 
-    render json: { message: courses }
+    if params[:gereqs]
+      input_gereqs = params[:gereqs]
+      courses = Selector.courses_with_gereqs(courses, input_gereqs)
+    end
+
+    render json: { count: courses.length, message: courses }
   end
 end
