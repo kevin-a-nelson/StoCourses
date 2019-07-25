@@ -1,4 +1,5 @@
 class Selector < ApplicationRecord
+
   def self.courses_by_department(courses, department)
     courses.select { |course| course['department'] == department }
   end
@@ -16,6 +17,12 @@ class Selector < ApplicationRecord
         end
       end
       select_course
+    end
+  end
+
+  def self.courses_by_level(courses, level)
+    courses.select do |course|
+      course['level'] == level
     end
   end
 end

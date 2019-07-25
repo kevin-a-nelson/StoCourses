@@ -20,9 +20,7 @@ class Api::CoursesController < ApplicationController
 
     if params[:level]
       input_level = params[:level].to_i
-      courses = courses.select do |course|
-        course['level'] == input_level
-      end
+      courses = Selector.courses_by_level(courses, input_level)
     end
 
     if params[:days]
