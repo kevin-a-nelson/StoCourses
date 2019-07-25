@@ -10,26 +10,12 @@ class Api::CoursesController < ApplicationController
 
     if params[:department]
       input_department = params[:department]
-      courses = courses.select do |course|
-        course['department'] == input_department
-      end
+      courses = Selector.courses_by_department(courses, input_department)
     end
 
     if params[:keyword]
       input_keyword = params[:keyword]
-      select_course = false
-      courses = courses.select do |course|
-        select_course = false
-        course.each do |_key, value|
-          value_str = value.to_s
-          value_includes_input_keyword = value_str.match(input_keyword)
-          if value_includes_input_keyword
-            select_course = true
-            break
-          end
-        end
-        select_course
-      end
+      courses = Selector.courses_by_keyword(courses, input_keyword)
     end
 
     if params[:level]
@@ -57,6 +43,7 @@ class Api::CoursesController < ApplicationController
       end
       select_course
     end
+
 
     render json: { count: courses.length, message: courses }
   end
