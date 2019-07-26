@@ -3,8 +3,12 @@ class Api::CoursesController < ApplicationController
     courses = courses_data
 
     if params[:query]
-      courses.each do |course|
-        display_courses << course[params[:query]]
+      temp_courses = courses
+      courses = []
+      temp_courses.each do |course|
+        next if course[params[:query]] == 'false'
+
+        courses << course[params[:query]]
       end
     end
 
@@ -33,6 +37,6 @@ class Api::CoursesController < ApplicationController
       courses = Selector.courses_with_gereqs(courses, input_gereqs)
     end
 
-    render json: { count: courses.length, message: courses }
+    render json: { count: courses.length, courses: courses }
   end
 end

@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+file = File.read('https://stolaf.dev/course-data/terms/20161.json')
+data = JSON.parse(file)
+
+course = Course.new(
+)
+
+course.save

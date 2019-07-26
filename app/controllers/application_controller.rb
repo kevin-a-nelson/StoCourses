@@ -4,6 +4,17 @@ class ApplicationController < ActionController::Base
   def courses_data
     file = File.read('stolaf_courses.json')
     data = JSON.parse(file)
+    data_str = []
+    data.each do |course|
+      data_hash = {}
+      course.each do |key, value|
+        value = value.to_s
+        value = value.gsub(/[\"\]\[\]]/, '')
+        data_hash[key] = value
+      end
+      data_str << data_hash
+    end
+    data_str
     data
   end
 end
