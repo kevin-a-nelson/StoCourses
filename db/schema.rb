@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_26_023246) do
+ActiveRecord::Schema.define(version: 2019_07_26_090142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(version: 2019_07_26_023246) do
     t.integer "semester"
     t.string "status"
     t.integer "term"
-    t.string "type"
     t.integer "year"
+    t.string "offerings"
   end
 
   create_table "selectors", force: :cascade do |t|
