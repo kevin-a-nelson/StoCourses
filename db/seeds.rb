@@ -14,27 +14,39 @@ uri = URI(url)
 response = Net::HTTP.get(uri)
 stolaf_courses = JSON.parse(response)
 
-stolaf_courses.each do |stolaf_course|
-  next if stolaf_course['name'].downcase == 'academic internship'
-  next if stolaf_course['type'].downcase == 'lab'
-  next if stolaf_course['max'] == 999
-  next if stolaf_course['max'] == 1
+def course?(course)
+  name = course['name'] || ''
+  type = course['type'] || ''
+  max = course['max'] || ''
+  title = course['title'] || ''
 
-  if stolaf_course['title']
-    next if stolaf_course['title'].downcase == 'independent study'
-  end
+  name = name.downcase
+  title = title.downcase
+
+  is_course = true
+
+  is_course = false if name.downcase == 'academic internship'
+  is_course = false if type == 'lab'
+  is_course = false if max == (999 || 1)
+  is_course = false if title == 'independent study'
+
+  is_course
+end
+
+stolaf_courses.each do |stolaf_course|
+  next unless course?(stolaf_course)
 
   course = Course.new(
     credits: stolaf_course['credits'],
     department: stolaf_course['department'],
-    description: stolaf_course['description'].to_s.gsub(/[\"\[\]]/, ''),
-    instructors: stolaf_course['instructors'].to_s.gsub(/[\"\[\]]/, ''),
+    description: stolaf_course['description'],
+    instructors: stolaf_course['instructors'],
     enrolled: stolaf_course['enrolled'],
-    gereqs: stolaf_course['gereqs'].to_s.gsub(/[\"\[\]]/, ''),
+    gereqs: stolaf_course['gereqs'],
     level: stolaf_course['level'],
     max: stolaf_course['max'],
     name: stolaf_course['name'],
-    notes: stolaf_course['notes'].to_s.gsub(/[\"\[\]]/, ''),
+    notes: stolaf_course['notes'],
     number: stolaf_course['number'],
     prerequisites: stolaf_course['prerequisites'],
     section: stolaf_course['section'],
@@ -42,7 +54,7 @@ stolaf_courses.each do |stolaf_course|
     status: stolaf_course['status'],
     term: stolaf_course['term'],
     year: stolaf_course['year'],
-    offerings: stolaf_course['offerings'].to_s.gsub(/[\"\[\]]/, '')
+    offerings: stolaf_course['offerings']
   )
   course.save!
 end

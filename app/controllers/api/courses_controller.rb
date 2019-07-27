@@ -38,22 +38,27 @@ class Api::CoursesController < ApplicationController
           times << "#{starts[idx]} - #{ends[idx]}".to_s.gsub(/[\"\]\[]/, '')
         end
 
-        times = times.uniq
+        # times = times.uniq
         times = times.to_s.gsub(/[\"\[\]]/, '')
         days = offerings.scan(/day=>(\w+)/).to_s.gsub(/[\"\[\]]/, '')
-        days = days.scan(/[A-Z]/).join
+        days = days.gsub(',', '')
 
-        if days == 'MWFT'
-          days = 'MWFTh'
-        end
+        locations = offerings.scan(/location=>(\w+\s\d+)/)
+        locations = locations.uniq
+        locations = locations.to_s
+        locations = locations.gsub(/[\"\[\]]/, '')
+
+        # if days == 'MWFT'
+        #   days = 'MWFTh'
+        # end
 
         num_of_days = days.split(',').length
-        # next if num_of_days != 1
+        # next unless locations.include?(',')
         {
           course: course,
           days: days,
           times: times,
-          schedule: "#{days} #{times}"
+          location: locations
         }
       end
     end
