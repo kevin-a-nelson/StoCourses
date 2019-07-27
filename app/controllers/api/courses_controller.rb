@@ -2,6 +2,11 @@ class Api::CoursesController < ApplicationController
   def index
     @courses = Course.all
 
+    if params[:type]
+      input_type = params[:type]
+      @courses = @courses.all.where(course_type: input_type)
+    end
+
     if params[:department]
       input_department = params[:department]
       @courses = @courses.all.where(department: input_department)

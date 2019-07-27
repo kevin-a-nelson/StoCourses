@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_27_095100) do
+ActiveRecord::Schema.define(version: 2019_07_27_221156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_07_27_095100) do
     t.boolean "sophmore"
     t.boolean "junior"
     t.boolean "senior"
-    t.string "session_type"
+    t.string "course_type"
     t.decimal "credits", precision: 5, scale: 2
   end
 

@@ -20,33 +20,12 @@ end
 
 fall_2019 = term_data(year: '2019', semester: '1')
 
-def course?(course)
-  name = course['name'] || ''
-  type = course['type'] || ''
-  max = course['max'] || ''
-  title = course['title'] || ''
-
-  name = name.downcase
-  title = title.downcase
-  type = type.downcase
-
-  is_course = true
-
-  is_course = false if name.match('academic internship')
-  is_course = false if name.match('independent research')
-  is_course = false if title.match('independent study')
-  is_course = false if type == 'lab'
-  is_course = false if max == (999 || 1)
-
-  is_course
-end
-
-def arr_to_str(arr)
+def arr_to_clean_str(arr)
   arr = arr.to_s
   arr.gsub(/[\"\[\]\\]/, '')
 end
 
-def hash_to_str(hsh)
+def hash_to_clean_str(hsh)
   hsh = hsh.to_s
   hsh.gsub(/[\"\[\]\\]/, '')
 end
@@ -57,46 +36,73 @@ def course_times(offerings)
   full_times = []
 
   start_times.length.times do |idx|
-    full_times << "#{start_times[idx]} - #{end_times[idx]}".gsub(/[\"\]\[]/, '')
+    full_time = "#{start_times[idx]} - #{end_times[idx]}"
+    full_times << full_time
   end
 
-  arr_to_str(full_times)
+  arr_to_clean_str(full_times)
 end
 
 def course_days(offerings)
   days_arr = offerings.scan(/day=>(\w+)/)
-  arr_to_str(days_arr)
-end
-
-def open_to_cohort?(cohort)
-  return true if cohort.nil?
-
-  !cohort.match('/0')
+  arr_to_clean_str(days_arr)
 end
 
 def course_location(offerings)
   location_arr = offerings.scan(/location=>(\w+\s\d+)/)
-  arr_to_str(location_arr)
+  arr_to_clean_str(location_arr)
+end
+
+def get_course_type(course)
+  type = course_attribute_downcase(course, 'type')
+  name = course_attribute_downcase(course, 'name')
+  title = course_attribute_downcase(course, 'title')
+
+  lab_in_type = type.match('lab')
+
+  academic_internship_in_name = name.match('academic internship')
+  academic_internship_in_title = title.match('academic internship')
+
+  independent_research_in_name = name.match('independent research')
+  independent_research_in_title = title.match('independent research')
+
+  independent_study_in_name = name.match('is/')
+  independent_study_in_title = title.match('independent study')
+
+  course_type = if lab_in_type
+                  'lab'
+                elsif academic_internship_in_name || academic_internship_in_title
+                  'academic internship'
+                elsif independent_research_in_name || independent_research_in_title
+                  'independent research'
+                elsif independent_study_in_name || independent_study_in_title
+                  'independent study'
+                else
+                  'class'
+                end
+  course_type
 end
 
 def create_course(course)
-  offerings_str = hash_to_str(course['offerings'])
+  offerings_str = hash_to_clean_str(course['offerings'])
 
   times_str = course_times(offerings_str)
   days_str = course_days(offerings_str)
   location_str = course_location(offerings_str)
 
-  open_to_firstyear = open_to_cohort?(course['firstyear'])
-  open_to_sophmore = open_to_cohort?(course['sophmore'])
-  open_to_junior = open_to_cohort?(course['junior'])
-  open_to_senior = open_to_cohort?(course['senior'])
+  open_to_firstyear = true
+  open_to_sophmore = true
+  open_to_junior = true
+  open_to_senior = true
 
-  description_str = arr_to_str(course['description'])
-  instructors_str = arr_to_str(course['instructors'])
-  notes_str       = arr_to_str(course['notes'])
-  gereqs_str      = arr_to_str(course['gereqs'])
+  description_str = arr_to_clean_str(course['description'])
+  instructors_str = arr_to_clean_str(course['instructors'])
+  notes_str       = arr_to_clean_str(course['notes'])
+  gereqs_str      = arr_to_clean_str(course['gereqs'])
 
-  revisions = hash_to_str(course['revisions'])
+  revisions = hash_to_clean_str(course['revisions'])
+
+  course_type = get_course_type(course)
 
   new_course = Course.new(
     clbid: course['clbid'],
@@ -120,7 +126,7 @@ def create_course(course)
     semester: course['semester'],
     status: course['status'],
     term: course['term'],
-    session_type: course['type'],
+    course_type: course_type,
     year: course['year'],
     days: days_str,
     times: times_str,
@@ -133,6 +139,11 @@ def create_course(course)
   new_course.save!
 end
 
-fall_2019.each do |session|
-  create_course(session) if course?(session)
+def course_attribute_downcase(course, attribute)
+  attribute = course[attribute] || attribute
+  attribute.downcase
+end
+
+fall_2019.each do |course|
+  create_course(course)
 end
