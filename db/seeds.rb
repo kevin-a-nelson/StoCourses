@@ -9,9 +9,9 @@
 require 'net/http'
 require 'json'
 
-def term_data(year_and_semester_num)
-  year = year_and_semester_num[:year]
-  semester = year_and_semester_num[:semester]
+def term_data(year_and_semester)
+  year = year_and_semester[:year]
+  semester = year_and_semester[:semester]
   url = "https://stolaf.dev/course-data/terms/#{year + semester}.json"
   uri = URI(url)
   response = Net::HTTP.get(uri)
@@ -19,8 +19,6 @@ def term_data(year_and_semester_num)
 end
 
 fall_2019 = term_data(year: '2019', semester: '1')
-interim_2019 = term_data(year: '2019', semester: '2')
-spring_2019 = term_data(year: '2019', semester: '3')
 
 def course?(course)
   name = course['name'] || ''
@@ -131,6 +129,11 @@ def create_course(course)
   new_course.save!
 end
 
-fall_2019.each do |section|
-  create_course if course?(section)
+# fall_2019.each do |session|
+#   create_course if course?(session)
+# end
+
+30.times do |idx|
+  session = fall_2019[idx]
+  create_course if course?(session)
 end
