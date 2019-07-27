@@ -38,7 +38,6 @@ class Api::CoursesController < ApplicationController
           times << "#{starts[idx]} - #{ends[idx]}".to_s.gsub(/[\"\]\[]/, '')
         end
 
-        # times = times.uniq
         times = times.to_s.gsub(/[\"\[\]]/, '')
         days = offerings.scan(/day=>(\w+)/).to_s.gsub(/[\"\[\]]/, '')
         days = days.gsub(',', '')
