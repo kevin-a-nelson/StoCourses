@@ -28,12 +28,41 @@ class Api::CoursesController < ApplicationController
 
     if params[:days]
       input_days = params[:days]
-      @courses = Selector.courses_with_days(@courses, input_days)
+      @courses = @courses.map do |course|
+        offerings = course['offerings'].to_s.gsub(/[\"\[\]]/, '')
+        starts = offerings.scan(/start=>(\w+:\w+)/)
+        ends = offerings.scan(/end=>(\w+:\w+)/)
+        times = []
+
+        starts.length.times do |idx|
+          times << "#{starts[idx]} - #{ends[idx]}".to_s.gsub(/[\"\]\[]/, '')
+        end
+
+        times = times.uniq
+        times = times.to_s.gsub(/[\"\[\]]/, '')
+        days = offerings.scan(/day=>(\w+)/).to_s.gsub(/[\"\[\]]/, '')
+        days = days.scan(/[A-Z]/).join
+
+        if days == 'MWFT'
+          days = 'MWFTh'
+        end
+
+        num_of_days = days.split(',').length
+        # next if num_of_days != 1
+        {
+          course: course,
+          days: days,
+          times: times,
+          schedule: "#{days} #{times}"
+        }
+      end
     end
 
     if params[:gereqs]
       input_gereqs = params[:gereqs]
-      @courses = Selector.courses_with_gereqs(@courses, input_gereqs)
+      @courses = @courses.select do |course|
+        course['gereqs'].include?(input_gereqs)
+      end
     end
 
     render json: { count: @courses.length, courses: @courses }
