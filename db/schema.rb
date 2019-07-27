@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_27_084533) do
+ActiveRecord::Schema.define(version: 2019_07_27_090931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 2019_07_27_084533) do
     t.integer "semester"
     t.string "status"
     t.integer "term"
-    t.string "type"
     t.integer "year"
     t.string "days"
     t.string "times"
@@ -48,6 +47,7 @@ ActiveRecord::Schema.define(version: 2019_07_27_084533) do
     t.boolean "sophmore"
     t.boolean "junior"
     t.boolean "senior"
+    t.string "session_type"
   end
 
   create_table "selectors", force: :cascade do |t|

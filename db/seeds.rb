@@ -39,16 +39,26 @@ def course?(course)
   is_course
 end
 
+def arr_to_str(arr)
+  arr = arr.to_s
+  arr.gsub(/[\"\[\]]/, '')
+end
+
+def hash_to_str(hsh)
+  hsh = hsh.to_s
+  hsh.gsub(/[\"\[\]]/, '')
+end
+
 def course_times(offerings)
   start_times = offerings.scan(/start=>(\w+:\w+)/)
   end_times = offerings.scan(/end=>(\w+:\w+)/)
   full_times = []
 
   start_times.length.times do |idx|
-    full_times << "#{start_times[idx]} - #{end_times[idx]}".to_s.gsub(/[\"\]\[]/, '')
+    full_times << "#{start_times[idx]} - #{end_times[idx]}".gsub(/[\"\]\[]/, '')
   end
 
-  array_to_str(full_times)
+  arr_to_str(full_times)
 end
 
 def course_days(offerings)
@@ -57,35 +67,27 @@ def course_days(offerings)
 end
 
 def open_to_cohort?(cohort)
+  return true if cohort.nil?
+
   !cohort.match('/0')
 end
 
 def course_location(offerings)
   location_arr = offerings.scan(/location=>(\w+\s\d+)/)
-  array_to_str(location_arr)
-end
-
-def arr_to_str(arr)
-  arr = arr.to_s
-  att.gsub(/[\"\[\]]/)
-end
-
-def hash_to_str(hsh)
-  hsh = hsh.to_s
-  hsh.gsub(/[\"\[\]]/)
+  arr_to_str(location_arr)
 end
 
 def create_course(course)
-  offerings = hash_to_str(course['offerings'])
+  offerings_str = hash_to_str(course['offerings'])
 
-  times_str = course_times(offerings)
-  days_str = course_times(offerings)
-  location_str = course_location(course['offerings'])
+  times_str = course_times(offerings_str)
+  days_str = course_days(offerings_str)
+  location_str = course_location(offerings_str)
 
-  open_to_firstyear = open_to_cohort(course['firstyear'])
-  open_to_sophmore = open_to_cohort(course['sophmore'])
-  open_to_junior = open_to_cohort(course['junior'])
-  open_to_senior = open_to_cohort(course['senior'])
+  open_to_firstyear = open_to_cohort?(course['firstyear'])
+  open_to_sophmore = open_to_cohort?(course['sophmore'])
+  open_to_junior = open_to_cohort?(course['junior'])
+  open_to_senior = open_to_cohort?(course['senior'])
 
   description_str = arr_to_str(course['description'])
   instructors_str = arr_to_str(course['instructors'])
@@ -94,7 +96,7 @@ def create_course(course)
 
   revisions = hash_to_str(course['revisions'])
 
-  new_course = course.new(
+  new_course = Course.new(
     clbid: course['clbid'],
     credits: course['credits'],
     crsid: course['crsid'],
@@ -116,7 +118,7 @@ def create_course(course)
     semester: course['semester'],
     status: course['status'],
     term: course['term'],
-    type: course['type'],
+    session_type: course['type'],
     year: course['year'],
     days: days_str,
     times: times_str,
@@ -135,5 +137,5 @@ end
 
 30.times do |idx|
   session = fall_2019[idx]
-  create_course if course?(session)
+  create_course(session) if course?(session)
 end
