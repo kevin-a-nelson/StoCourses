@@ -28,25 +28,27 @@ def course?(course)
 
   name = name.downcase
   title = title.downcase
+  type = type.downcase
 
   is_course = true
 
-  is_course = false if name == 'academic internship'
+  is_course = false if name.match('academic internship')
+  is_course = false if name.match('independent research')
+  is_course = false if title.match('independent study')
   is_course = false if type == 'lab'
   is_course = false if max == (999 || 1)
-  is_course = false if title == 'independent study'
 
   is_course
 end
 
 def arr_to_str(arr)
   arr = arr.to_s
-  arr.gsub(/[\"\[\]]/, '')
+  arr.gsub(/[\"\[\]\\]/, '')
 end
 
 def hash_to_str(hsh)
   hsh = hsh.to_s
-  hsh.gsub(/[\"\[\]]/, '')
+  hsh.gsub(/[\"\[\]\\]/, '')
 end
 
 def course_times(offerings)
@@ -131,11 +133,6 @@ def create_course(course)
   new_course.save!
 end
 
-# fall_2019.each do |session|
-#   create_course if course?(session)
-# end
-
-30.times do |idx|
-  session = fall_2019[idx]
+fall_2019.each do |session|
   create_course(session) if course?(session)
 end

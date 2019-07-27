@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_27_090931) do
+ActiveRecord::Schema.define(version: 2019_07_27_095100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 2019_07_27_090931) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "clbid"
-    t.decimal "credits", precision: 5
     t.string "crsid"
     t.string "department"
     t.text "description"
@@ -48,6 +47,7 @@ ActiveRecord::Schema.define(version: 2019_07_27_090931) do
     t.boolean "junior"
     t.boolean "senior"
     t.string "session_type"
+    t.decimal "credits", precision: 5, scale: 2
   end
 
   create_table "selectors", force: :cascade do |t|
