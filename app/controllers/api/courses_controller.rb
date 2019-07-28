@@ -22,6 +22,13 @@ class Api::CoursesController < ApplicationController
       @courses = @courses.all.where(days: input_days)
     end
 
+    if params[:times]
+      input_times = params[:times]
+      @courses = @courses.select do |course|
+        course['times'].include?(input_times)
+      end
+    end
+
     if params[:gereqs]
       input_gereqs = params[:gereqs]
       @courses = @courses.select do |course|

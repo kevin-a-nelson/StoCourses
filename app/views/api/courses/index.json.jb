@@ -25,6 +25,7 @@ def courses
       description: course.description,
       prerequisites: course.prerequisites,
       notes: course.notes,
+      offerings: course.offerings,
       course_type: course.course_type
     }
   end

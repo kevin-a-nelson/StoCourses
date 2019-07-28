@@ -36,7 +36,7 @@ def course_times(offerings)
   full_times = []
 
   start_times.length.times do |idx|
-    full_time = "#{start_times[idx]} - #{end_times[idx]}"
+    full_time = "#{start_times[idx]}-#{end_times[idx]}"
     full_times << full_time
   end
 
@@ -45,7 +45,48 @@ end
 
 def course_days(offerings)
   days_arr = offerings.scan(/day=>(\w+)/)
-  arr_to_clean_str(days_arr)
+  return '' unless days_arr
+
+  temp_days_arr = days_arr
+  days_arr = []
+  temp_days_arr.each do |day|
+    days_arr << day[0]
+  end
+
+  days_acroynm = []
+  days_arr.each do |day|
+    day = day.downcase
+    if day == 'mo'
+      days_acroynm << 'M'
+    elsif day == 'tu'
+      days_acroynm << 'Tu'
+    elsif day == 'we'
+      days_acroynm << 'W'
+    elsif day == 'th'
+      days_acroynm << 'Th'
+    elsif day == 'fr'
+      days_acroynm << 'F'
+    end
+  end
+
+  days_acroynm_str = ''
+
+  days_acroynm_sorted = (%w[M Tu W Th F] & days_acroynm)
+
+  days_acroynm_str = 'MWF' if days_acroynm_sorted == %w[M W F]
+  days_acroynm_str = 'TTh' if days_acroynm_sorted == %w[Tu Th]
+  days_acroynm_str = 'M-F' if days_acroynm_sorted == %w[M Tu W Th F]
+
+  if days_acroynm_str == ''
+    days_acroynm_sorted.each do |acronym|
+      days_acroynm_str += acronym
+    end
+  end
+
+  days_acroynm_str = 'MWF-Th' if days_acroynm_str == 'MWThF'
+  days_acroynm_str = 'MWF-Tu' if days_acroynm_str == 'MTuWF'
+
+  days_acroynm_str
 end
 
 def course_location(offerings)
