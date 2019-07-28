@@ -124,7 +124,7 @@ def get_course_type(course)
   course_type
 end
 
-def create_course(course)
+def parse_course(course)
   offerings_str = hash_to_clean_str(course['offerings'])
 
   times_str = course_times(offerings_str)
@@ -145,7 +145,7 @@ def create_course(course)
 
   course_type = get_course_type(course)
 
-  new_course = Course.new(
+  parsed_course = {
     clbid: course['clbid'],
     credits: course['credits'],
     crsid: course['crsid'],
@@ -176,8 +176,102 @@ def create_course(course)
     sophmore: open_to_sophmore,
     junior: open_to_junior,
     senior: open_to_senior
+  }
+  parsed_course
+end
+
+def create_course(course)
+  parsed_course = parse_course(course)
+  new_course = Course.new(
+    clbid: parsed_course[:clbid],
+    credits: parsed_course[:credits],
+    crsid: parsed_course[:crsid],
+    department: parsed_course[:department],
+    description: parsed_course[:description],
+    enrolled: parsed_course[:enrolled],
+    gereqs: parsed_course[:gereqs],
+    instructors: parsed_course[:instructors],
+    level: parsed_course[:level],
+    max: parsed_course[:max],
+    name: parsed_course[:name],
+    notes: parsed_course[:notes],
+    number: parsed_course[:number],
+    offerings: parsed_course[:offerings],
+    pn: parsed_course[:pn],
+    prerequisites: parsed_course[:prerequisites],
+    revisions: parsed_course[:revisions],
+    section: parsed_course[:section],
+    semester: parsed_course[:semester],
+    status: parsed_course[:status],
+    term: parsed_course[:term],
+    course_type: parsed_course[:course_type],
+    year: parsed_course[:year],
+    days: parsed_course[:days],
+    times: parsed_course[:times],
+    location: parsed_course[:location],
+    firstyear: parsed_course[:firstyear],
+    sophmore: parsed_course[:sophmore],
+    junior: parsed_course[:junior],
+    senior: parsed_course[:senior]
   )
   new_course.save!
+end
+
+# def courses_data(year_and_semester)
+#   year = year_and_semester[:year]
+#   semester = year_and_semester[:semester]
+#   term_str = year + semester
+#   term_int = term_str.to_i
+#   courses = Course.all.where(term: term_int)
+# end
+
+def update_courses(year_and_semester)
+  api_courses = term_data(year_and_semester)
+
+  api_courses.each do |api_course|
+    clsid = api_course['clbid']
+    db_course = Course.all.where(clbid: clsid).limit(1)
+
+    if !db_course.empty?
+      api_course = parse_course(api_course)
+      update_course(db_course, api_course)
+    end
+  end
+end
+
+def update_course(course, updated_course)
+  course.update(
+    clbid: updated_course[:clbid],
+    credits: updated_course[:credits],
+    crsid: updated_course[:crsid],
+    department: updated_course[:department],
+    description: updated_course[:description],
+    enrolled: updated_course[:enrolled],
+    gereqs: updated_course[:gereqs],
+    instructors: updated_course[:instructors],
+    level: updated_course[:level],
+    max: updated_course[:max],
+    name: updated_course[:name],
+    notes: updated_course[:notes],
+    number: updated_course[:number],
+    offerings: updated_course[:offerings],
+    pn: updated_course[:pn],
+    prerequisites: updated_course[:prerequisites],
+    revisions: updated_course[:revisions],
+    section: updated_course[:section],
+    semester: updated_course[:semester],
+    status: updated_course[:status],
+    term: updated_course[:term],
+    course_type: updated_course[:course_type],
+    year: updated_course[:year],
+    days: updated_course[:days],
+    times: updated_course[:times],
+    location: updated_course[:location],
+    firstyear: updated_course[:firstyear],
+    sophmore: updated_course[:sophmore],
+    junior: updated_course[:junior],
+    senior: updated_course[:senior]
+  )
 end
 
 def course_attribute_downcase(course, attribute)
@@ -185,6 +279,8 @@ def course_attribute_downcase(course, attribute)
   attribute.downcase
 end
 
-fall_2019.each do |course|
-  create_course(course)
-end
+update_courses(year: '2019', semester: '1')
+
+# fall_2019.each do |course|
+#   create_course(course)
+# end
