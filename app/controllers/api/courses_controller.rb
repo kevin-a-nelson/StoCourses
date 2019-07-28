@@ -36,6 +36,18 @@ class Api::CoursesController < ApplicationController
       end
     end
 
+    if params[:name]
+      input_name = params[:name]
+      @courses = @courses.all.where(name: input_name)
+    end
+
+    if params[:instructors]
+      input_instructors = params[:instructors]
+      @courses = @courses.select do |course|
+        course['instructors'].include?(input_instructors)
+      end
+    end
+
     render 'index.json.jb'
   end
 end
