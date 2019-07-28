@@ -22,17 +22,15 @@ class Api::CoursesController < ApplicationController
       @courses = @courses.all.where(days: input_days)
     end
 
+    if params[:status]
+      input_status = params[:status]
+      @courses = @courses.all.where(status: input_status)
+    end
+
     if params[:times]
       input_times = params[:times]
       @courses = @courses.select do |course|
         course['times'].include?(input_times)
-      end
-    end
-
-    if params[:gereqs]
-      input_gereqs = params[:gereqs]
-      @courses = @courses.select do |course|
-        course['gereqs'].include?(input_gereqs)
       end
     end
 
@@ -43,8 +41,20 @@ class Api::CoursesController < ApplicationController
 
     if params[:instructors]
       input_instructors = params[:instructors]
+      @courses = @courses.all.where(instructors: input_instructors)
+    end
+
+    if params[:gereqs]
+      input_gereqs = params[:gereqs]
+      input_gereqs = input_gereqs.split(',')
       @courses = @courses.select do |course|
-        course['instructors'].include?(input_instructors)
+        has_input_gereqs = true
+        input_gereqs.each do |ge|
+          unless course['gereqs'].include?(ge)
+            has_input_gereqs = false
+          end
+        end
+        has_input_gereqs
       end
     end
 

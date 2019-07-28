@@ -1,32 +1,32 @@
 def courses
   @courses.map do |course|
     {
-      name: course.name
-      # department: course.department,
-      # number: course.number,
-      # gereqs: course.gereqs,
-      # credits: course.credits,
-      # status: course.status,
-      # days: course.days,
-      # times: course.times,
+      name: course.name,
+      department: course.department,
+      number: course.number,
+      gereqs: course.gereqs,
+      credits: course.credits,
+      status: course.status,
+      days: course.days,
+      times: course.times,
       # location: course.location,
       # firstyear: course.firstyear,
       # sophmore: course.sophmore,
       # junior: course.junior,
       # senior: course.senior,
-      # instructors: course.instructors,
-      # enrolled: course.enrolled,
+      instructors: course.instructors,
+      enrolled: course.enrolled,
       # level: course.level,
-      # max: course.max,
+      max: course.max,
       # section: course.section,
       # semester: course.semester,
       # term: course.term,
       # year: course.year,
       # description: course.description,
-      # prerequisites: course.prerequisites,
+      prerequisites: course.prerequisites,
       # notes: course.notes,
       # offerings: course.offerings,
-      # course_type: course.course_type
+      course_type: course.course_type
     }
   end
 end

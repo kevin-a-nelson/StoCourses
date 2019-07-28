@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   namespace :api do
     get '/courses' => 'courses#index'
   end
+
+  get '/courses' => 'courses#index'
 end

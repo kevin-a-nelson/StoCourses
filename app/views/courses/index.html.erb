@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="index.css">
+</head>
+<html>  
+<body>
+  <div>
+    <% @courses.each do |course| %>
+      <p>Name: <%= course.name %></p>
+      <p>Department: <%= course.department %> </p>
+      <p>Gereqs: <%= course.gereqs %></p>
+      <hr>
+    <% end %>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
