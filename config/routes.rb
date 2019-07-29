@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     get '/courses' => 'courses#index'
 
     post '/users' => 'users#create'
+
+    post '/sessions' => 'sessions#create'
   end
 
   get '/courses' => 'courses#index'
