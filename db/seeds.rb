@@ -94,6 +94,11 @@ def course_location(offerings)
   arr_to_clean_str(location_arr)
 end
 
+def course_attribute_downcase(course, attribute)
+  attribute = course[attribute] || attribute
+  attribute.downcase
+end
+
 def get_course_type(course)
   type = course_attribute_downcase(course, 'type')
   name = course_attribute_downcase(course, 'name')
@@ -217,14 +222,6 @@ def create_course(course)
   new_course.save!
 end
 
-# def courses_data(year_and_semester)
-#   year = year_and_semester[:year]
-#   semester = year_and_semester[:semester]
-#   term_str = year + semester
-#   term_int = term_str.to_i
-#   courses = Course.all.where(term: term_int)
-# end
-
 def update_courses(year_and_semester)
   api_courses = term_data(year_and_semester)
 
@@ -272,11 +269,6 @@ def update_course(course, updated_course)
     junior: updated_course[:junior],
     senior: updated_course[:senior]
   )
-end
-
-def course_attribute_downcase(course, attribute)
-  attribute = course[attribute] || attribute
-  attribute.downcase
 end
 
 update_courses(year: '2019', semester: '1')
