@@ -1,0 +1,7 @@
+@planners.map do |planner|
+  {
+    name: planner.name,
+    year: planner.year,
+    semester: planner.semester
+  }
+end

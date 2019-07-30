@@ -15,11 +15,9 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def show
-    if current_user
-      render json: { message: current_user }
-    else
-      render json: { message: 'please log in' }
-    end
+  def index
+    @planners = current_user.planners
+
+    render 'index.json.jb'
   end
 end

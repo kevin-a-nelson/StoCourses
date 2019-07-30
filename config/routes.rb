@@ -6,12 +6,13 @@ Rails.application.routes.draw do
   namespace :api do
     get '/courses' => 'courses#index'
 
-    get '/users/:id' => 'users#show'
+    get '/users' => 'users#index'
     post '/users' => 'users#create'
 
-    post '/sessions' => 'sessions#create'
+    get '/planner/:id' => 'planners#show'
+    post '/planner' => 'planners#create'
 
-    post '/planner/:id' => 'planners#show'
+    post '/sessions' => 'sessions#create'
   end
 
   get '/courses' => 'courses#index'
