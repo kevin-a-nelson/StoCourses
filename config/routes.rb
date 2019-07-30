@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     post '/users' => 'users#create'
 
     post '/sessions' => 'sessions#create'
+
+    post '/planner/:id' => 'planners#show'
   end
 
   get '/courses' => 'courses#index'

@@ -1,0 +1,6 @@
+{
+  name: @planner.name,
+  year: @planner.year,
+  semester: @planner.semester,
+  user_id: @planner.user_id
+}
