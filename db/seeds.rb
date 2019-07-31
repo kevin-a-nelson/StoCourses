@@ -304,4 +304,6 @@ def test_courses_and_labs_links
   end
 end
 
+
+# link_courses_and_la bs
 test_courses_and_labs_links

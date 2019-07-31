@@ -17,4 +17,13 @@ class Api::PlannersController < ApplicationController
       render json: { errors: @planner.errors.full_messages }
     end
   end
+
+  def index
+    if current_user
+      @planners = current_user.planners
+      render 'index.json.jb'
+    else
+      render json: { message: 'log in' }
+    end
+  end
 end

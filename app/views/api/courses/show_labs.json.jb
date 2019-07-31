@@ -1,0 +1,6 @@
+@labs.map do |lab|
+  {
+    id: lab.id,
+    name: lab.name
+  }
+end
