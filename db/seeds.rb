@@ -232,6 +232,8 @@ def update_courses(year_and_semester)
     if !db_course.empty?
       api_course = parse_course(api_course)
       update_course(db_course, api_course)
+    else
+      create_course(api_course)
     end
   end
 end
@@ -271,8 +273,35 @@ def update_course(course, updated_course)
   )
 end
 
-update_courses(year: '2019', semester: '1')
+# update_courses(year: '2019', semester: '1')
 
 # fall_2019.each do |course|
 #   create_course(course)
 # end
+
+### Linking Labs to Courses ###
+
+def link_courses_and_labs
+  labs = Course.all.where(course_type: 'lab')
+  Course.all.each do |course|
+    labs.each do |lab|
+      next if course['name'] == lab['name']
+      next if course['department'] != lab['department']
+      next if course['number'] != lab['number']
+
+      CourseLab.create(course_id: course.id, lab_id: lab.id)
+    end
+  end
+end
+
+def test_courses_and_labs_links
+  Course.all.each do |course|
+    if course.labs
+      course.labs.each do |lab|
+        puts "#{course['name']} -- #{lab['name']}"
+      end
+    end
+  end
+end
+
+test_courses_and_labs_links

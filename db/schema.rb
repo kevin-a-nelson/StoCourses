@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_073240) do
+ActiveRecord::Schema.define(version: 2019_07_30_210139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "course_labs", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "course_id"
+    t.integer "lab_id"
+  end
 
   create_table "courses", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -48,6 +55,11 @@ ActiveRecord::Schema.define(version: 2019_07_30_073240) do
     t.boolean "senior"
     t.string "course_type"
     t.decimal "credits", precision: 5, scale: 2
+  end
+
+  create_table "labs", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "planners", force: :cascade do |t|

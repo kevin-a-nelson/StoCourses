@@ -60,4 +60,12 @@ class Api::CoursesController < ApplicationController
 
     render 'index.json.jb'
   end
+
+  def course_labs
+    # @course = Course.find_by_name("Struct Chem & Equilib")
+    # @course = Course.all.where(clbid: params['clbid'])
+    @course = Course.all.where(clbid: "0000124054")
+    @course = @course.first
+    render json: { labs: @course.labs }
+  end
 end
