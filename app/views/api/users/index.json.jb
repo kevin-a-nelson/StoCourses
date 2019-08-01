@@ -1,7 +1,9 @@
-@planners.map do |planner|
+@users.map do |user|
   {
-    name: planner.name,
-    year: planner.year,
-    semester: planner.semester
+    id: user.id,
+    name: user.name,
+    username: user.username,
+    year: user.enrollment_year,
+    email: user.email
   }
 end

@@ -1,9 +1,21 @@
 class Api::UsersController < ApplicationController
+
+  def index
+    @users = User.all
+    render 'index.json.jb'
+  end
+
+  def show
+    @user = User.find_by_id(params[:id])
+    render 'show.json.jb'
+  end
+
   def create
     user = User.new(
       name: params[:name],
       username: params[:username],
       email: params[:email],
+      enrollment_year: params[:enrollment_year],
       password: params[:password],
       password_confirmation: params[:password_confirmation]
     )
@@ -15,9 +27,20 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def index
-    @planners = current_user.planners
+  def update
+    @user = User.find_by_id(params[:id])
+    @user.update(
+      name: params[:name] || @user.name,
+      username: params[:username] || @user.username,
+      email: params[:email] || @user.email,
+      enrollment_year: params[:enrollment_year] || @user.enrollment_year
+    )
+    render 'show.json.jb'
+  end
 
-    render 'index.json.jb'
+  def destroy
+    @user = User.find_by_id(params[:id])
+    @user.destroy
+    render 'show.json.jb'
   end
 end

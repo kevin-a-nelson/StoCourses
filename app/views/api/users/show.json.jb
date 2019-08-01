@@ -1,0 +1,6 @@
+{
+  name: @user.name,
+  username: @user.username,
+  enrollment_year: @user.enrollment_year,
+  email: @user.email
+}

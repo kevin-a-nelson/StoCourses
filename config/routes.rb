@@ -7,7 +7,10 @@ Rails.application.routes.draw do
 
     # Users CRUD
     get '/users' => 'users#index'
+    get '/users/:id' => 'users#show'
+    patch '/users/:id' => 'users#update'
     post '/users' => 'users#create'
+    delete '/users/:id' => 'users#destroy'
 
     # Planners CRUD
     get '/planners' => 'planners#index'

@@ -35,5 +35,4 @@ class Api::PlannersController < ApplicationController
       render json: { errors: @planner.errors.full_messages }
     end
   end
-
 end
