@@ -58,10 +58,23 @@ class Api::PlannersController < ApplicationController
       return
     end
 
-    @planners = current_user.planners
-    @planner = @planners.find_by_id(params[:id])
+    planners = current_user.planners
+    @planner = planners.find_by_id(params[:id])
     @planner.destroy
 
     render 'show.json.jb'
+  end
+
+  def terms
+    if !current_user
+      render json: { message: 'please log in' }
+      return
+    end
+
+    planners = current_user.planners
+    planner = planners.find_by_id(params[:id])
+    @terms = planner.terms
+
+    render 'terms.json.jb'
   end
 end

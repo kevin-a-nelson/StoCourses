@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     # Planners CRUD
     get '/planners' => 'planners#index'
     get '/planners/:id' => 'planners#show'
+    get '/planners/:id/terms' => 'planners#terms'
     patch '/planners/:id' => 'planners#update'
     post '/planners' => 'planners#create'
     delete 'planners/:id' => 'planners#destroy'
@@ -22,6 +23,7 @@ Rails.application.routes.draw do
     # Terms CRUD
     get '/terms' => 'terms#index'
     get '/terms/:id' => 'terms#show'
+    get '/terms/:id/courses' => 'terms#courses'
     patch '/terms/:id' => 'terms#update'
     post '/terms/:planner_id' => 'terms#create'
     delete '/terms/:id' => 'terms#destroy'
