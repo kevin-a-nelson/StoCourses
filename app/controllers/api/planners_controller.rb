@@ -1,30 +1,46 @@
 class Api::PlannersController < ApplicationController
+
   def index
-    if current_user
-      @planners = current_user.planners
-      render 'index.json.jb'
-    else
-      render json: { message: 'log in' }
+    if !current_user
+      render json: { message: 'please log in' }
+      return
     end
+
+    @planners = current_user.planners
+    render 'index.json.jb'
   end
 
   def show
-    @planner = Planner.find_by_id(params[:id])
+    if !current_user
+      render json: { message: 'please log in' }
+      return
+    end
+
+    @planners = current_user.planners
+    @planner = @planners.find_by_id(params[:id])
+    render 'show.json.jb'
   end
 
   def update
-    if current_user
-      @planner = Planner.find_by_id(params[:id])
-      @planner.update(
-        name: params[:name] || @planner.name,
-        user_id: current_user.id || @planner.user_id
-      )
-    else
-      render json: { message: 'log in' }
+    if !current_user
+      render json: { message: 'please log in' }
+      return
     end
+
+    @planner = Planner.find_by_id(params[:id])
+    @planner.update(
+      name: params[:name] || @planner.name,
+      user_id: current_user.id || @planner.user_id
+    )
+    render 'show.json.jb'
   end
 
   def create
+    if !current_user
+      render json: { message: 'please log in' }
+      return
+    end
+
     @planner = Planner.new(
       name: params[:name],
       user_id: current_user.id
@@ -34,5 +50,18 @@ class Api::PlannersController < ApplicationController
     else
       render json: { errors: @planner.errors.full_messages }
     end
+  end
+
+  def destroy
+    if !current_user
+      render json: { message: 'please log in' }
+      return
+    end
+
+    @planners = current_user.planners
+    @planner = @planners.find_by_id(params[:id])
+    @planner.destroy
+
+    render 'show.json.jb'
   end
 end

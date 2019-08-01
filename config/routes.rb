@@ -14,21 +14,22 @@ Rails.application.routes.draw do
 
     # Planners CRUD
     get '/planners' => 'planners#index'
-    get '/planner/:id' => 'planners#show'
-    patch '/planner/:id' => 'planners#update'
-    post '/planner' => 'planners#create'
-    delete 'planner/:id' => 'planner#delete'
+    get '/planners/:id' => 'planners#show'
+    patch '/planners/:id' => 'planners#update'
+    post '/planners' => 'planners#create'
+    delete 'planners/:id' => 'planners#destroy'
 
     # Terms CRUD
     get '/terms' => 'terms#index'
     get '/terms/:id' => 'terms#show'
     patch '/terms/:id' => 'terms#update'
-    post '/terms' => 'terms#create'
+    post '/terms/:planner_id' => 'terms#create'
     delete '/terms/:id' => 'terms#destroy'
 
     # Courses CRUD
+    # Courses will be Updated and created though seeds folder
     get '/courses' => 'courses#index'
-    get '/courses/:name' => 'courses#show'
+    get '/courses/:id' => 'courses#show'
 
     # Sessions Create
     post '/sessions' => 'sessions#create'

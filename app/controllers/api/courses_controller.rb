@@ -54,10 +54,11 @@ class Api::CoursesController < ApplicationController
         has_input_gereqs
       end
     end
+    render 'index.json.jb'
   end
 
   def show
-    @course = Course.all.find_by_name(params['name'])
+    @course = Course.all.find_by_name(params['id'])
     @labs = @course.labs
 
     if @labs

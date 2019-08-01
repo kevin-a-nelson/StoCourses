@@ -1,1 +1,7 @@
-@planners
+@planners.map do |planner|
+  {
+    id: planner.id,
+    name: planner.name,
+    user_id: planner.user_id
+  }
+end
