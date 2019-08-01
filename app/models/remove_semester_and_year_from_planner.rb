@@ -1,0 +1,2 @@
+class RemoveSemesterAndYearFromPlanner < ApplicationRecord
+end

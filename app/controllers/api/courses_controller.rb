@@ -54,8 +54,6 @@ class Api::CoursesController < ApplicationController
         has_input_gereqs
       end
     end
-
-    render 'index.json.jb'
   end
 
   def show
