@@ -39,6 +39,14 @@ class Api::TermsController < ApplicationController
       return
     end
 
+    planners = current_user.planners
+    planner = planners.find_by_id(params[:planner_id])
+
+    if !planner
+      render json: { message: 'invalid planner id' }
+      return
+    end
+
     @term = Term.new(
       year: params[:year],
       semester: params[:semester],
@@ -65,7 +73,16 @@ class Api::TermsController < ApplicationController
       return
     end
 
-    term = Term.find_by_id(params[:id])
+    planners = current_user.planners
+    planner = planners.find_by_id(params[:planner_id])
+
+    if !planner
+      render json: { message: 'invalid planner id' }
+      return
+    end
+
+    terms = planner.terms
+    term = terms.find_by_id(params[:id])
     @courses = term.courses
     render 'courses.json.jb'
   end

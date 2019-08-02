@@ -1,6 +1,5 @@
 class Api::CoursesController < ApplicationController
   def index
-
     @courses = Course.all
 
     if params[:term]

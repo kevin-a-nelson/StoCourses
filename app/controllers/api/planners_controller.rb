@@ -78,4 +78,18 @@ class Api::PlannersController < ApplicationController
 
     render 'terms.json.jb'
   end
+
+  def courses
+    planners = current_user.planners
+    # planner = planners.find_by_id(params[:planner_id])
+    planner = planners.find_by_id(6)
+
+    terms = planner.terms
+    # term = terms.find_by_id(params[:term_id])
+    term = terms.find_by_id(7)
+
+    @courses = term.courses
+
+    render 'courses.json.jb'
+  end
 end
