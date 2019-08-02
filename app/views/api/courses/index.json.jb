@@ -3,14 +3,15 @@ def courses
     {
       # clbid: course.clbid,
       # crsid: course.crsid,
-      name: course.name
+      # id: course.id,
+      name: course.name,
+      # gereqs: course.gereqs,
+      # times: course.times,
       # department: course.department,
       # number: course.number,
-      # gereqs: course.gereqs,
       # credits: course.credits,
       # status: course.status,
       # days: course.days,
-      # times: course.times,
       # location: course.location,
       # firstyear: course.firstyear,
       # sophmore: course.sophmore,

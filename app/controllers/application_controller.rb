@@ -26,4 +26,19 @@ class ApplicationController < ActionController::Base
       render json: {}, status: :unauthorized
     end
   end
+
+  def courses_including_values_at_key(courses, key, values)
+    values = params[key]
+    values = values.split(',')
+    courses_with_values = courses.select do |course|
+      next if course[key].nil?
+
+      has_values = true
+      values.each do |ge|
+        has_values = false unless course[key].include?(ge)
+      end
+      has_values
+    end
+    courses_with_values
+  end
 end

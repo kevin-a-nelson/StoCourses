@@ -1,0 +1,5 @@
+{
+  id: @course_term.id,
+  course_id: @course_term.course_id,
+  term_id: @course_term.term_id
+}

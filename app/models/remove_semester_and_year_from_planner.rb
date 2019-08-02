@@ -1,2 +1,0 @@
-class RemoveSemesterAndYearFromPlanner < ApplicationRecord
-end

@@ -19,6 +19,7 @@ def term_data(year_and_semester)
 end
 
 fall_2019 = term_data(year: '2019', semester: '1')
+iterim_2019 = term_data(year: '2019', semester: '2')
 
 def arr_to_clean_str(arr)
   arr = arr.to_s
@@ -273,18 +274,25 @@ def update_course(course, updated_course)
   )
 end
 
-# update_courses(year: '2019', semester: '1')
-
-# fall_2019.each do |course|
-#   create_course(course)
-# end
+def init_term(term)
+  term.each do |course|
+    p course['name']
+    create_course(course)
+  end
+end
 
 ### Linking Labs to Courses ###
 
-def link_courses_and_labs
-  labs = Course.all.where(course_type: 'lab')
-  Course.all.each do |course|
+def link_courses_and_labs(term)
+  labs = Course.where(course_type: 'lab').where(term: term)
+  courses = Course.where(term: term)
+  courses.all.each do |course|
     labs.each do |lab|
+      if course['name'].gsub(' ', '') == lab['name'].gsub(' ', '').gsub('Lab', '')
+        CourseLab.create(course_id: course.id, lab_id: lab.id)
+        next
+      end
+
       next if course['name'] == lab['name']
       next if course['department'] != lab['department']
       next if course['number'] != lab['number']
@@ -294,8 +302,9 @@ def link_courses_and_labs
   end
 end
 
-def test_courses_and_labs_links
-  Course.all.each do |course|
+def test_courses_and_labs_links(term)
+  courses = Course.where(term: term)
+  courses.all.each do |course|
     if course.labs
       course.labs.each do |lab|
         puts "#{course['name']} -- #{lab['name']}"
@@ -304,6 +313,33 @@ def test_courses_and_labs_links
   end
 end
 
+# init_term(iterim_2019)
 
-# link_courses_and_la bs
-test_courses_and_labs_links
+iterim_2019.each do |course_interim|
+  fall_2019.each do |course_fall|
+    if course_interim['clbid'] == course_fall['clbid']
+      p "#{course_interim['name']} -- #{course_fall['name']}"
+    end
+  end
+end
+
+# link_courses_and_labs(20192)
+# test_courses_and_labs_links(20192)
+
+labs = Course.where(course_type: 'lab').where(term: 20191)
+courses = Course.where(course_type: 'class').where(term: 20191)
+
+counter = 0
+
+labs.each do |lab|
+  courses.each do |course|
+    course_name = course['name'].gsub(/\s/, '').gsub('/', '')
+    lab_name = lab['name'].gsub(/\s/, '').gsub(/Lab/, '').gsub('/', '')
+    if course_name == lab_name
+      counter += 1
+      p "#{course['name']} -- #{lab['name']}"
+    end
+  end
+end
+
+p counter

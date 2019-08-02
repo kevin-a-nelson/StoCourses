@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_01_005138) do
+ActiveRecord::Schema.define(version: 2019_08_02_074844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_005138) do
     t.boolean "senior"
     t.string "course_type"
     t.decimal "credits", precision: 5, scale: 2
+    t.index ["term"], name: "index_courses_on_term"
   end
 
   create_table "planners", force: :cascade do |t|

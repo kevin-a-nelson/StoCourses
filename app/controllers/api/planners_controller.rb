@@ -27,7 +27,8 @@ class Api::PlannersController < ApplicationController
       return
     end
 
-    @planner = Planner.find_by_id(params[:id])
+    @planners = current_user.planners
+    @planner = @planners.find_by_id(params[:id])
     @planner.update(
       name: params[:name] || @planner.name,
       user_id: current_user.id || @planner.user_id
