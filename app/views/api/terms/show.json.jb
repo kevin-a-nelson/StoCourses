@@ -2,5 +2,6 @@
   id: @term.id,
   year: @term.year,
   semester: @term.semester,
-  planner_id: @term.planner_id
+  term: @term.term,
+  order: @term.order
 }

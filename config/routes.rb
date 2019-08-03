@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   # EXAMPLE JSON ROUTE WITH API NAMESPACE
   namespace :api do
-
     # Users CRUD
     get '/users' => 'users#index'
     get '/users/:id' => 'users#show'
@@ -15,7 +14,7 @@ Rails.application.routes.draw do
     # Terms CRUD
     get '/terms' => 'terms#index'
     get '/terms/:id' => 'terms#show'
-    post '/terms/:planner_id' => 'terms#create'
+    post '/terms' => 'terms#create'
     patch '/terms/:id' => 'terms#update'
     delete '/terms/:id' => 'terms#destroy'
 
