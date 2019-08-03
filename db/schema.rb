@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_075205) do
+ActiveRecord::Schema.define(version: 2019_08_03_100128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,10 +57,6 @@ ActiveRecord::Schema.define(version: 2019_08_03_075205) do
     t.string "days"
     t.string "times"
     t.string "location"
-    t.boolean "firstyear"
-    t.boolean "sophmore"
-    t.boolean "junior"
-    t.boolean "senior"
     t.string "course_type"
     t.decimal "credits", precision: 5, scale: 2
     t.index ["term"], name: "index_courses_on_term"
@@ -85,4 +81,5 @@ ActiveRecord::Schema.define(version: 2019_08_03_075205) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "enrollment_year"
   end
+
 end

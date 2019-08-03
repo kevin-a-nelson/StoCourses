@@ -138,11 +138,6 @@ def parse_course(course)
   days_str = course_days(offerings_str)
   location_str = course_location(offerings_str)
 
-  open_to_firstyear = true
-  open_to_sophmore = true
-  open_to_junior = true
-  open_to_senior = true
-
   description_str = arr_to_clean_str(course['description'])
   instructors_str = arr_to_clean_str(course['instructors'])
   notes_str       = arr_to_clean_str(course['notes'])
@@ -178,11 +173,7 @@ def parse_course(course)
     year: course['year'],
     days: days_str,
     times: times_str,
-    location: location_str,
-    firstyear: open_to_firstyear,
-    sophmore: open_to_sophmore,
-    junior: open_to_junior,
-    senior: open_to_senior
+    location: location_str
   }
   parsed_course
 end
@@ -215,11 +206,7 @@ def create_course(course)
     year: parsed_course[:year],
     days: parsed_course[:days],
     times: parsed_course[:times],
-    location: parsed_course[:location],
-    firstyear: parsed_course[:firstyear],
-    sophmore: parsed_course[:sophmore],
-    junior: parsed_course[:junior],
-    senior: parsed_course[:senior]
+    location: parsed_course[:location]
   )
   new_course.save!
 end
@@ -267,11 +254,7 @@ def update_course(course, updated_course)
     year: updated_course[:year],
     days: updated_course[:days],
     times: updated_course[:times],
-    location: updated_course[:location],
-    firstyear: updated_course[:firstyear],
-    sophmore: updated_course[:sophmore],
-    junior: updated_course[:junior],
-    senior: updated_course[:senior]
+    location: updated_course[:location]
   )
 end
 
@@ -290,6 +273,12 @@ def link_courses_and_labs(term)
   courses.all.each do |course|
     labs.each do |lab|
       next if course['name'] == lab['name']
+
+      if lab['name'].include?(course['name']) && lab['name'].include?('Lab')
+        CourseLab.create(course_id: course.id, lab_id: lab.id)
+        next
+      end
+
       next if course['department'] != lab['department']
       next if course['number'] != lab['number']
       CourseLab.create(course_id: course.id, lab_id: lab.id)
@@ -298,35 +287,21 @@ def link_courses_and_labs(term)
 end
 
 def test_courses_and_labs_links(term)
+  course_and_labs = []
   courses = Course.where(term: term)
   courses.all.each do |course|
     if course.labs
       course.labs.each do |lab|
-        puts "#{course['name']} -- #{lab['name']}"
+        course_and_labs << "#{course['name']} -- #{lab['name']}"
       end
     end
   end
+  course_and_labs = course_and_labs.uniq
+  puts course_and_labs
+  puts course_and_labs.count
 end
 
-# init_term(iterim_2019)
-
-link_courses_and_labs(20191)
-# test_courses_and_labs_links(20192)
-
-# labs = Course.where(course_type: 'lab').where(term: 20191)
-# courses = Course.where(course_type: 'class').where(term: 20191)
-
-# counter = 0
-
-# labs.each do |lab|
-#   courses.each do |course|
-#     course_name = course['name'].gsub(/\s/, '').gsub('/', '')
-#     lab_name = lab['name'].gsub(/\s/, '').gsub(/Lab/, '').gsub('/', '')
-#     if course_name == lab_name
-#       counter += 1
-#       p "#{course['name']} -- #{lab['name']}"
-#     end
-#   end
-# end
-
-# p counter
+# init_term(spring_2019)
+# link_courses_and_labs(20192)
+test_courses_and_labs_links(20192)
+# update_course(20191)

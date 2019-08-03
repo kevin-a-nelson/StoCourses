@@ -47,6 +47,10 @@ class Api::CoursesController < ApplicationController
       @courses = @courses.where(number: params[:number])
     end
 
+    if params[:clbid]
+      @courses = @courses.where(clbid: params[:clbid])
+    end
+
     if params[:times]
       @courses = courses_including_values_at_key(@courses, :times, params[:times])
     end
