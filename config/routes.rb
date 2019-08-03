@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     # Courses CRUD
     get '/courses' => 'courses#index'
     get '/courses/:id' => 'courses#show'
+    get '/courses/:id/labs' => 'courses#labs'
     post '/courses' => 'courses#create'
     patch '/courses/:id' => 'courses#update'
     delete '/courses/:id' => 'courses#destroy'

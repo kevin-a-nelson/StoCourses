@@ -85,5 +85,4 @@ ActiveRecord::Schema.define(version: 2019_08_03_075205) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "enrollment_year"
   end
-
 end

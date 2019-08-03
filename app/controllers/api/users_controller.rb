@@ -21,6 +21,24 @@ class Api::UsersController < ApplicationController
     )
 
     if user.save
+      enrollment_year = params[:enrollment_year].to_i
+      4.times do |year|
+        year = enrollment_year + year
+        3.times do |semester|
+          semester += 1
+          term = "#{year}#{semester}"
+          2.times do |order|
+            order += 1
+            Term.create(
+              year: year,
+              semester: semester,
+              term: term,
+              order: order,
+              user_id: user.id
+            )
+          end
+        end
+      end
       render json: { message: 'User created successfully' }, status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :bad_request

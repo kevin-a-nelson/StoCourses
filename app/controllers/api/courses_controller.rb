@@ -146,4 +146,10 @@ class Api::CoursesController < ApplicationController
     @course.destroy
     render 'show.json.jb'
   end
+
+  def labs
+    course = Course.find_by_id(params[:id])
+    @labs = course.labs
+    render 'labs.json.jb'
+  end
 end

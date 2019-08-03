@@ -3,6 +3,7 @@
     id: term.id,
     year: term.year,
     semester: term.semester,
+    terms: term.term,
     order: term.order
   }
 end

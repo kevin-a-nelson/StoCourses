@@ -6,6 +6,23 @@ class Api::TermsController < ApplicationController
     end
 
     @terms = current_user.terms
+
+    if params[:term]
+      @terms = @terms.where(term: params[:term])
+    end
+
+    if params[:year]
+      @terms = @terms.where(year: params[:year])
+    end
+
+    if params[:semester]
+      @terms = @terms.where(semester: params[:semester])
+    end
+
+    if params[:order]
+      @terms = @terms.where(order: params[:order])
+    end
+
     render 'index.json.jb'
   end
 
@@ -45,11 +62,12 @@ class Api::TermsController < ApplicationController
       return
     end
 
-    terms = current_user.terms.where(term: params[:term])
+    term = params[:year] + params[:semester]
+    terms = current_user.terms.where(term: term)
     term_order = terms.count + 1
 
     @term = Term.new(
-      term: params[:term],
+      term: term,
       year: params[:year],
       semester: params[:semester],
       user_id: current_user.id,
