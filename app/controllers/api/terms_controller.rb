@@ -74,4 +74,15 @@ class Api::TermsController < ApplicationController
 
     render 'show.json.jb'
   end
+
+  def courses
+    if !current_user
+      render json: { message: 'login in' }
+      return
+    end
+
+    term = current_user.terms.find_by_id(params[:id])
+    @courses = term.courses
+    render 'courses.json.jb'
+  end
 end

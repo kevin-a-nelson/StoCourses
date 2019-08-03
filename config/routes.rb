@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     # Terms CRUD
     get '/terms' => 'terms#index'
     get '/terms/:id' => 'terms#show'
+    get '/terms/:id/courses' => 'terms#courses'
     post '/terms' => 'terms#create'
     patch '/terms/:id' => 'terms#update'
     delete '/terms/:id' => 'terms#destroy'
