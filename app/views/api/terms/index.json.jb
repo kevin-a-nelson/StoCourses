@@ -1,8 +1,10 @@
-@terms.map do |term|
-  {
-    id: term.id,
-    year: term.year,
-    semester: term.semester,
-    planner_id: term.planner_id
-  }
+@planners.map do |planner|
+  planner.terms.map do |term|
+    {
+      id: term.id,
+      year: term.year,
+      semester: term.semester,
+      planner_id: term.planner_id
+    }
+  end
 end

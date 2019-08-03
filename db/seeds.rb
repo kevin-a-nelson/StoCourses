@@ -111,20 +111,20 @@ def get_course_type(course)
   academic_internship_in_name = name.match('academic internship')
   academic_internship_in_title = title.match('academic internship')
 
-  independent_research_in_name = name.match('independent research')
+  independent_research_in_name = name.match('independent research') || name.match('ir/')
   independent_research_in_title = title.match('independent research')
 
-  independent_study_in_name = name.match('is/')
+  independent_study_in_name = name.match('is/') || name.match('independent study')
   independent_study_in_title = title.match('independent study')
 
   course_type = if lab_in_type
                   'lab'
                 elsif academic_internship_in_name || academic_internship_in_title
-                  'academic internship'
+                  'AI'
                 elsif independent_research_in_name || independent_research_in_title
-                  'independent research'
+                  'IR'
                 elsif independent_study_in_name || independent_study_in_title
-                  'independent study'
+                  'IS'
                 else
                   'class'
                 end
@@ -289,17 +289,9 @@ def link_courses_and_labs(term)
   courses = Course.where(term: term)
   courses.all.each do |course|
     labs.each do |lab|
-      # if course['name'].gsub(' ', '') == lab['name'].gsub(' ', '').gsub('Lab', '')
-      #   CourseLab.create(course_id: course.id, lab_id: lab.id)
-      #   next
-      # end      
-
       next if course['name'] == lab['name']
       next if course['department'] != lab['department']
       next if course['number'] != lab['number']
-
-      p course.id
-      p lab.id
       CourseLab.create(course_id: course.id, lab_id: lab.id)
     end
   end

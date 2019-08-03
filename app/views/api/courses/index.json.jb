@@ -3,7 +3,7 @@ def courses
     {
       # clbid: course.clbid,
       # crsid: course.crsid,
-      # id: course.id,
+      id: course.id,
       name: course.name,
       # gereqs: course.gereqs,
       # times: course.times,
@@ -29,7 +29,7 @@ def courses
       # prerequisites: course.prerequisites,
       # notes: course.notes,
       # offerings: course.offerings,
-      # course_type: course.course_type
+      course_type: course.course_type
     }
   end
 end

@@ -3,7 +3,7 @@ class Api::CoursesController < ApplicationController
     @courses = Course.all
 
     if params[:term]
-      @courses = @courses.all.where(term: params[:term])
+      @courses = @courses.where(term: params[:term])
     end
 
     if params[:year]
@@ -15,6 +15,7 @@ class Api::CoursesController < ApplicationController
     end
 
     if params[:type]
+      input_type = "academic internship"
       @courses = @courses.where(course_type: params[:type])
     end
 

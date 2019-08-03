@@ -1,5 +1,0 @@
-@courses.map do |course|
-  {
-    name: course.name
-  }
-end

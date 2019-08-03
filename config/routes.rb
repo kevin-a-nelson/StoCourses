@@ -12,19 +12,9 @@ Rails.application.routes.draw do
     post '/users' => 'users#create'
     delete '/users/:id' => 'users#destroy'
 
-    # Planners CRUD
-    get '/planners' => 'planners#index'
-    get '/planners/:id' => 'planners#show'
-    get '/planners/:id/terms' => 'planners#terms'
-    get '/planners/:id/terms/:id/courses' => 'planners#courses'
-    post '/planners' => 'planners#create'
-    patch '/planners/:id' => 'planners#update'
-    delete 'planners/:id' => 'planners#destroy'
-
     # Terms CRUD
     get '/terms' => 'terms#index'
     get '/terms/:id' => 'terms#show'
-    get '/terms/:planner_id/:id/courses' => 'terms#courses'
     post '/terms/:planner_id' => 'terms#create'
     patch '/terms/:id' => 'terms#update'
     delete '/terms/:id' => 'terms#destroy'

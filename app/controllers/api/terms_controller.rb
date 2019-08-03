@@ -5,7 +5,7 @@ class Api::TermsController < ApplicationController
       return
     end
 
-    @terms = Term.all
+    @planners = current_user.planners
     render 'index.json.jb'
   end
 
@@ -65,25 +65,5 @@ class Api::TermsController < ApplicationController
     @term = Term.find_by_id(params[:id])
     @term.destroy
     render 'show.json.jb'
-  end
-
-  def courses
-    if !current_user
-      render json: { message: 'login in' }
-      return
-    end
-
-    planners = current_user.planners
-    planner = planners.find_by_id(params[:planner_id])
-
-    if !planner
-      render json: { message: 'invalid planner id' }
-      return
-    end
-
-    terms = planner.terms
-    term = terms.find_by_id(params[:id])
-    @courses = term.courses
-    render 'courses.json.jb'
   end
 end
