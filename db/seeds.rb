@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 require 'net/http'
 require 'json'
 
@@ -18,9 +10,44 @@ def term_data(year_and_semester)
   JSON.parse(response)
 end
 
+fall_2014 = term_data(year: '2014', semester: '1')
+interim_2014 = term_data(year: '2014', semester: '2')
+spring_2014 = term_data(year: '2014', semester: '3')
+summer_first_2014 = term_data(year: '2014', semester: '4')
+summer_second_2014 = term_data(year: '2014', semester: '5')
+
+fall_2015 = term_data(year: '2015', semester: '1')
+interim_2015 = term_data(year: '2015', semester: '2')
+spring_2015 = term_data(year: '2015', semester: '3')
+summer_first_2015 = term_data(year: '2015', semester: '4')
+summer_second_2015 = term_data(year: '2015', semester: '5')
+
+fall_2016 = term_data(year: '2016', semester: '1')
+interim_2016 = term_data(year: '2016', semester: '2')
+spring_2016 = term_data(year: '2016', semester: '3')
+summer_first_2016 = term_data(year: '2016', semester: '4')
+summer_second_2016 = term_data(year: '2016', semester: '5')
+
+fall_2017 = term_data(year: '2017', semester: '1')
+interim_2017 = term_data(year: '2017', semester: '2')
+spring_2017 = term_data(year: '2017', semester: '3')
+summer_first_2017 = term_data(year: '2017', semester: '4')
+summer_second_2017 = term_data(year: '2017', semester: '5')
+
+fall_2018 = term_data(year: '2018', semester: '1')
+interim_2018 = term_data(year: '2018', semester: '2')
+spring_2018 = term_data(year: '2018', semester: '3')
+summer_first_2018 = term_data(year: '2018', semester: '4')
+summer_second_2018 = term_data(year: '2018', semester: '5')
+
 fall_2019 = term_data(year: '2019', semester: '1')
-iterim_2019 = term_data(year: '2019', semester: '2')
+interim_2019 = term_data(year: '2019', semester: '2')
 spring_2019 = term_data(year: '2019', semester: '3')
+
+# Not yet available
+
+# summer_first_2019 = term_data(year: '2019', semester: '4')
+# summer_second_2019 = term_data(year: '2019', semester: '5')
 
 def arr_to_clean_str(arr)
   arr = arr.to_s
@@ -41,6 +68,8 @@ def course_times(offerings)
     full_time = "#{start_times[idx]}-#{end_times[idx]}"
     full_times << full_time
   end
+
+  full_times = full_times.uniq
 
   arr_to_clean_str(full_times)
 end
@@ -301,7 +330,7 @@ def test_courses_and_labs_links(term)
   puts course_and_labs.count
 end
 
-# init_term(spring_2019)
+# init_term(summer_first_2018)
 # link_courses_and_labs(20192)
-test_courses_and_labs_links(20192)
-# update_course(20191)
+# test_courses_and_labs_links(20192)
+update_courses(year: '2019', semester: '1')

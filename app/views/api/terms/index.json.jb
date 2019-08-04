@@ -2,8 +2,9 @@
   {
     id: term.id,
     year: term.year,
-    semester: term.semester,
+    semester: term.semester_num_to_name,
     terms: term.term,
-    order: term.order
+    order: term.order,
+    courses: term.courses
   }
 end

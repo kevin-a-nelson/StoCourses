@@ -6,4 +6,18 @@ class Course < ApplicationRecord
   has_many :labs, through: :course_labs
 
   validates :clbid, uniqueness: true
+
+  def formated_times
+    times.gsub(/\s/, '').split(',').uniq.to_s.gsub(/[\"\[\]]/, '').gsub('-',' - ')
+  end
+
+  def semester_num_to_name 
+    case semester
+    when 1 then 'fall'
+    when 2 then 'interim'
+    when 3 then 'spring'
+    when 4 then 'summer session 1'
+    when 5 then 'summer session 2'
+    end
+  end
 end
