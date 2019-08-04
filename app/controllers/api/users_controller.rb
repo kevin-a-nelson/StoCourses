@@ -22,12 +22,12 @@ class Api::UsersController < ApplicationController
 
     if user.save
       enrollment_year = params[:enrollment_year].to_i
-      4.times do |year|
+      5.times do |year|
         year = enrollment_year + year
-        3.times do |semester|
+        5.times do |semester|
           semester += 1
           term = "#{year}#{semester}"
-          2.times do |order|
+          1.times do |order|
             order += 1
             Term.create(
               year: year,
