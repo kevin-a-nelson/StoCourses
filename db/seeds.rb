@@ -289,7 +289,7 @@ end
 
 def init_term(term)
   term.each do |course|
-    p course['name']
+    # p course['name']
     create_course(course)
   end
 end
@@ -326,11 +326,11 @@ def test_courses_and_labs_links(term)
     end
   end
   course_and_labs = course_and_labs.uniq
-  puts course_and_labs
-  puts course_and_labs.count
+  # puts course_and_labs
+  # puts course_and_labs.count
 end
 
-# init_term(summer_first_2018)
+init_term(summer_second_2017) 
 # link_courses_and_labs(20192)
 # test_courses_and_labs_links(20192)
-update_courses(year: '2019', semester: '1')
+# update_courses(year: '2019', semester: '1')

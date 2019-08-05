@@ -15,7 +15,6 @@ class Api::CoursesController < ApplicationController
     end
 
     if params[:type]
-      input_type = "academic internship"
       @courses = @courses.where(course_type: params[:type])
     end
 
