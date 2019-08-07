@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     get '/course_terms/:id' => 'course_terms#show'
     post '/course_terms' => 'course_terms#create'
     patch '/course_terms/:id' => 'course_terms#update'
-    delete '/course_terms/:id' => 'course_terms#destroy'
+    delete '/course_terms/:term_id/:course_id' => 'course_terms#destroy'
 
     # Sessions Create
     post '/sessions' => 'sessions#create'

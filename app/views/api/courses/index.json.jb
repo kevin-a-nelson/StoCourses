@@ -14,9 +14,9 @@ def courses
       days: course.days,
       location: course.location,
       instructors: course.instructors,
-      enrolled: course.enrolled,
+      # enrolled: course.enrolled,
       level: course.level,
-      max: course.max,
+      # max: course.max,
       section: course.section,
       semester: course.semester_num_to_name,
       term: course.term,
@@ -24,7 +24,7 @@ def courses
       description: course.description,
       prerequisites: course.prerequisites,
       notes: course.notes,
-      # offerings: course.offerings,
+      offerings: course.offerings,
       course_type: course.course_type
     }
   end

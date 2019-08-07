@@ -17,7 +17,7 @@
     level: course.level,
     max: course.max,
     section: course.section,
-    semester: course.semester,  
+    semester: course.semester,
     term: course.term,
     year: course.year,
     description: course.description,

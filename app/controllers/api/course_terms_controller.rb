@@ -33,8 +33,19 @@ class Api::CourseTermsController < ApplicationController
   end
 
   def destroy
-    @course_term = CourseTerm.find_by_id(params[:id])
-    @course_term.destroy
-    render 'show.json.jb'
+    if params[:id]
+      @course_term = CourseTerm.find_by_id(params[:id])
+    elsif params[:course_id] && params[:term_id]
+      @course_term = CourseTerm.where(term_id: params[:term_id]).where(course_id: params[:course_id]).limit(1)
+    end
+
+    @course_term = @course_term[0]
+
+    if @course_term
+      @course_term.destroy
+      render 'show.json.jb'
+    else
+      render json: { errors: 'some error occured' }
+    end
   end
 end

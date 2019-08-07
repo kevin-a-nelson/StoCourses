@@ -3,5 +3,6 @@
   year: @term.year,
   semester: @term.semester,
   term: @term.term,
-  order: @term.order
+  order: @term.order,
+  courses: @term.courses
 }

@@ -330,7 +330,21 @@ def test_courses_and_labs_links(term)
   # puts course_and_labs.count
 end
 
-init_term(summer_second_2017) 
+# init_term(summer_second_2017) 
 # link_courses_and_labs(20192)
 # test_courses_and_labs_links(20192)
 # update_courses(year: '2019', semester: '1')
+
+departs = {}
+Course.where(term: 20191).each do |course|
+  if departs.include?(course.department)
+    departs[course.department] += 1
+  else
+    departs[course.department] = 1
+  end
+end
+
+departs = departs.sort_by(&:last)
+departs.each do |key, value|
+  puts "#{key}: #{value}"
+end
