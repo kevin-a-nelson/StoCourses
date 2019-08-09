@@ -15,6 +15,14 @@ class Course < ApplicationRecord
     gereqs.split(", ").count
   end
 
+  def profs
+    Prof.all.select { |prof| instructors.match(prof.name) }
+  end
+
+  def two_profs
+    Course.all.select { |course| course.instructors.split(",").length > 1 }
+  end
+
   def semester_num_to_name
     case semester
     when 1 then 'fall'

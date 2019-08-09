@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_09_003245) do
+ActiveRecord::Schema.define(version: 2019_08_09_210743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,10 +66,14 @@ ActiveRecord::Schema.define(version: 2019_08_09_003245) do
   create_table "profs", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
-    t.decimal "rating", precision: 1, scale: 1
-    t.integer "num_ratings"
-    t.integer "tid"
+    t.string "department"
+    t.string "f_name"
+    t.string "l_name"
+    t.string "tid"
+    t.string "num_ratings"
+    t.string "overall_ratings"
+    t.string "difficulty"
+    t.string "rating"
   end
 
   create_table "terms", force: :cascade do |t|

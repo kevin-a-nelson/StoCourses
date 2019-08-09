@@ -1,5 +1,10 @@
 [
-  {"name": "Adam H Berliner", "rating": "4.8", "num_ratings": 16, "tid": 1405645},
+  {
+   "name": "Adam H Berliner",
+   "rating": "4.8", 
+   "num_ratings": 16, 
+   "tid": 1405645
+  },
   {"name": "Alden C Adolph", "rating": "5.0", "num_ratings": 1, "tid": 2477923},
   {"name": "Alison J Feldt", "rating": "N/A", "num_ratings": 0, "tid": 2411005},
   {"name": "Amy E Larsen", "rating": "3.7", "num_ratings": 3, "tid": 2209725},
@@ -98,7 +103,7 @@
   {"name": "Joanne Quimby", "rating": "5.0", "num_ratings": 3, "tid": 2415987},
   {"name": "John Saurer", "rating": "4.6", "num_ratings": 20, "tid": 391874},
   {"name": "Jolene Jacobson Barjasteh", "rating": "4.3", "num_ratings": 22, "tid": 410679},
-  {"name": "Jonathan P O Conner", "rating": "3.0", "num_ratings": 3, "tid": 1681438},
+  {"name": "Jonathan P O'Conner", "rating": "3.0", "num_ratings": 3, "tid": 1681438},
   {"name": "Jonathan T Naito", "rating": "4.7", "num_ratings": 13, "tid": 1711261},
   {"name": "Joseph Mbele", "rating": "3.1", "num_ratings": 35, "tid": 350774},
   {"name": "Joshua R Anderson", "rating": "2.8", "num_ratings": 13, "tid": 1984780},

@@ -1,48 +1,48 @@
 require 'net/http'
 require 'json'
+require 'http'
+require 'httparty'
 
-def term_data(year_and_semester)
-  year = year_and_semester[:year]
-  semester = year_and_semester[:semester]
-  url = "https://stolaf.dev/course-data/terms/#{year + semester}.json"
+def term_data(term)
+  url = "https://stolaf.dev/course-data/terms/#{term}.json"
   uri = URI(url)
   response = Net::HTTP.get(uri)
   JSON.parse(response)
 end
 
-fall_2014 = term_data(year: '2014', semester: '1')
-interim_2014 = term_data(year: '2014', semester: '2')
-spring_2014 = term_data(year: '2014', semester: '3')
-summer_first_2014 = term_data(year: '2014', semester: '4')
-summer_second_2014 = term_data(year: '2014', semester: '5')
+# fall_2014 = term_data('20141')
+# interim_2014 = term_data('20142')
+# spring_2014 = term_data('20143')
+# summer_first_2014 = term_data('20144')
+# summer_second_2014 = term_data('20145')
 
-fall_2015 = term_data(year: '2015', semester: '1')
-interim_2015 = term_data(year: '2015', semester: '2')
-spring_2015 = term_data(year: '2015', semester: '3')
-summer_first_2015 = term_data(year: '2015', semester: '4')
-summer_second_2015 = term_data(year: '2015', semester: '5')
+# fall_2015 = term_data('20151')
+# interim_2015 = term_data('20152')
+# spring_2015 = term_data('20153')
+# summer_first_2015 = term_data('20154')
+# summer_second_2015 = term_data('20155')
 
-fall_2016 = term_data(year: '2016', semester: '1')
-interim_2016 = term_data(year: '2016', semester: '2')
-spring_2016 = term_data(year: '2016', semester: '3')
-summer_first_2016 = term_data(year: '2016', semester: '4')
-summer_second_2016 = term_data(year: '2016', semester: '5')
+# fall_2016 = term_data('20161')
+# interim_2016 = term_data('20162')
+# spring_2016 = term_data('20163')
+# summer_first_2016 = term_data('20164')
+# summer_second_2016 = term_data('20165')
 
-fall_2017 = term_data(year: '2017', semester: '1')
-interim_2017 = term_data(year: '2017', semester: '2')
-spring_2017 = term_data(year: '2017', semester: '3')
-summer_first_2017 = term_data(year: '2017', semester: '4')
-summer_second_2017 = term_data(year: '2017', semester: '5')
+# fall_2017 = term_data('20171')
+# interim_2017 = term_data('20172')
+# spring_2017 = term_data('20173')
+# summer_first_2017 = term_data('20174')
+# summer_second_2017 = term_data('20175')
 
-fall_2018 = term_data(year: '2018', semester: '1')
-interim_2018 = term_data(year: '2018', semester: '2')
-spring_2018 = term_data(year: '2018', semester: '3')
-summer_first_2018 = term_data(year: '2018', semester: '4')
-summer_second_2018 = term_data(year: '2018', semester: '5')
+# fall_2018 = term_data('20181')
+# interim_2018 = term_data('20182')
+# spring_2018 = term_data('20183')
+# summer_first_2018 = term_data('20184')
+# summer_second_2018 = term_data('20185')
 
-fall_2019 = term_data(year: '2019', semester: '1')
-interim_2019 = term_data(year: '2019', semester: '2')
-spring_2019 = term_data(year: '2019', semester: '3')
+# fall_2019 = term_data('20191')
+# interim_2019 = term_data('20192')
+# spring_2019 = term_data('20193')
 
 # Not yet available
 
@@ -326,17 +326,125 @@ def test_courses_and_labs_links(term)
     end
   end
   course_and_labs = course_and_labs.uniq
-  # puts course_and_labs
-  # puts course_and_labs.count
 end
+
+# profs_data = JSON.parse(File.read("db/local_data/professors_data.json"))
+def init_profs(profs_data)
+  profs_data.each do |prof_data|
+    prof_name = prof_data['name']
+    middle_initial = prof_name.split(' ')[1]
+
+    if prof_name.split(' ').length == 3
+      prof_name = prof_name.gsub(/ \w /, " #{middle_initial}. ")
+    end
+    prof = Prof.new(
+      num_ratings: prof_data['num_ratings'],
+      name: prof_name,
+      rating: prof_data['rating'],
+      tid: prof_data['tid']
+    )
+    prof.save!
+  end
+end
+
+def update_profs(profs_data)
+  profs_data.each do |prof_data|
+    Prof.all.each do |prof|
+      next unless prof.tid == prof_data['tid']
+
+      prof_name = prof_data['name']
+
+      if prof_name.split(' ').length == 3
+        middle_initial = prof_name.split(' ')[1]
+        prof_name = prof_name.gsub(/ \w /, " #{middle_initial}. ")
+      end
+
+      prof.update(
+        num_ratings: prof_data['num_ratings'] || prof.num_ratings,
+        name: prof_name || prof.name,
+        rating: prof_data['rating'] || prof.rating,
+        tid: prof_data['tid'] || prof.tid
+      )
+    end
+  end
+end
+
+def num_of_prof_pages
+  url = "http://www.ratemyprofessors.com/filter/professor/?&page=1&filter=teacherlastname_sort_s+asc&query=*\%3A*&queryoption=TEACHER&queryBy=schoolId&sid=862"
+  response = HTTParty.get(url)
+  parsed_response = response.parsed_response
+  search_results_total = parsed_response['searchResultsTotal']
+  num_of_pages = search_results_total / 20
+end
+
+def profs_page_data(page)
+  url = "http://www.ratemyprofessors.com/filter/professor/?&page=#{page}&filter=teacherlastname_sort_s+asc&query=*\%3A*&queryoption=TEACHER&queryBy=schoolId&sid=862"
+  response = HTTParty.get(url)
+  parsed_response = response.parsed_response
+end
+
+def scrape_difficulty(prof_id)
+  url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=#{prof_id}"
+  response = HTTParty.get(url).body
+  level_of_difficulty = response.match(/<div class="grade" title="">\s+(\d\.\d)/)
+
+  if level_of_difficulty
+    level_of_difficulty[1]
+  else
+    "N/A"
+  end
+end
+
+def init_profs
+  num_of_pages = num_of_prof_pages
+  (1..num_of_pages).each do |page_num|
+    page_data = profs_page_data(page_num)
+    page_data = page_data['professors']
+    page_data.each do |prof_data|
+      sleep(0.5)
+      difficulty = scrape_difficulty(prof_data['tid'])
+      prof = Prof.new(
+        difficulty: difficulty,
+        department: prof_data['tDept'],
+        f_name: prof_data['tFname'],
+        l_name: prof_data['tFname'],
+        tid: prof_data['tid'],
+        num_ratings: prof_data['tNumRatings'],
+        rating: prof_data['overall_rating']
+      )
+      p prof.f_name
+      prof.save!
+    end
+  end
+end
+
+init_profs
+
+def write_in_file(file, content)
+  file = File.open(file, "w")
+  file.puts(content)
+  file.close
+end
+
+# {
+# 'tDept': 'Mathematics',
+# 'tSid': '862',
+# 'institution_name': 'St. Olaf College',
+# 'tFname': 'Adam',
+# 'tMiddlename': '',
+# 'tLname': 'Berliner',
+# 'tid': 1405645,
+# 'tNumRatings': 16,
+# 'rating_class': 'good',
+# 'contentType': 'TEACHER',
+# 'categoryType': 'PROFESSOR',
+# 'overall_rating': '4.8'
+# }
 
 # init_term(summer_second_2017)
 # link_courses_and_labs(20192)
 # test_courses_and_labs_links(20192)
 # update_courses(year: '2019', semester: '1')
 
-profs_data = JSON.parse(File.read("db/local_data/professors_data.json"))
-
-profs_data.each do |prof|
-  puts prof
-end
+# init_profs(profs_data)
+# update_profs(profs_data)

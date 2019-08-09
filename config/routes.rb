@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     post '/users' => 'users#create'
     delete '/users/:id' => 'users#destroy'
 
+    get '/tests' => 'test#index'
+
     # Terms CRUD
     # resources :terms
     get '/terms' => 'terms#index'
