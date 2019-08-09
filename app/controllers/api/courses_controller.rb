@@ -58,6 +58,10 @@ class Api::CoursesController < ApplicationController
       @courses = courses_including_values_at_key(@courses, :gereqs, params[:gereqs])
     end
 
+    if params[:num_of_ges]
+      @courses = @courses.select { |course| course.num_of_ges == params[:num_of_ges].to_i }
+    end
+
     render 'index.json.jb'
   end
 

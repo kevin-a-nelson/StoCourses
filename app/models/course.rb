@@ -8,10 +8,14 @@ class Course < ApplicationRecord
   validates :clbid, uniqueness: true
 
   def formated_times
-    times.gsub(/\s/, '').split(',').uniq.to_s.gsub(/[\"\[\]]/, '').gsub('-',' - ')
+    times.gsub(/\s/, '').split(',').uniq.to_s.gsub(/[\"\[\]]/, '').gsub('-', ' - ')
   end
 
-  def semester_num_to_name 
+  def num_of_ges
+    gereqs.split(", ").count
+  end
+
+  def semester_num_to_name
     case semester
     when 1 then 'fall'
     when 2 then 'interim'

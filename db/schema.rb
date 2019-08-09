@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_100128) do
+ActiveRecord::Schema.define(version: 2019_08_09_003245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2019_08_03_100128) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "course_id"
     t.integer "term_id"
+    t.index ["course_id", "term_id"], name: "index_course_terms_on_course_id_and_term_id", unique: true
   end
 
   create_table "courses", force: :cascade do |t|
@@ -62,6 +63,15 @@ ActiveRecord::Schema.define(version: 2019_08_03_100128) do
     t.index ["term"], name: "index_courses_on_term"
   end
 
+  create_table "profs", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+    t.decimal "rating", precision: 1, scale: 1
+    t.integer "num_ratings"
+    t.integer "tid"
+  end
+
   create_table "terms", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -81,4 +91,5 @@ ActiveRecord::Schema.define(version: 2019_08_03_100128) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "enrollment_year"
   end
+
 end
