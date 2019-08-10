@@ -25,9 +25,11 @@ def courses
       description: course.description,
       prerequisites: course.prerequisites,
       notes: course.notes,
-      offerings: course.offerings,
       course_type: course.course_type,
-      profs: course.profs
+      num_ratings: course.num_ratings,
+      difficulty: course.difficulty,
+      rating: course.rating,
+      url: course.rate_my_prof_url
     }
   end
 end

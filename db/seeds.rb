@@ -290,28 +290,6 @@ def test_courses_and_labs_links(term)
   course_and_labs = course_and_labs.uniq
 end
 
-def update_profs(profs_data)
-  profs_data.each do |prof_data|
-    Prof.all.each do |prof|
-      next unless prof.tid == prof_data['tid']
-
-      prof_name = prof_data['name']
-
-      if prof_name.split(' ').length == 3
-        middle_initial = prof_name.split(' ')[1]
-        prof_name = prof_name.gsub(/ \w /, " #{middle_initial}. ")
-      end
-
-      prof.update(
-        num_ratings: prof_data['num_ratings'] || prof.num_ratings,
-        name: prof_name || prof.name,
-        rating: prof_data['rating'] || prof.rating,
-        tid: prof_data['tid'] || prof.tid
-      )
-    end
-  end
-end
-
 def num_of_prof_pages
   url = "http://www.ratemyprofessors.com/filter/professor/?&page=1&filter=teacherlastname_sort_s+asc&query=*\%3A*&queryoption=TEACHER&queryBy=schoolId&sid=862"
   response = HTTParty.get(url)
@@ -386,10 +364,10 @@ def update_profs
 
         prof.update(
           difficulty: difficulty || prof.difficulty,
-          department: prof_data['tDept'] || prof.department,
-          f_name: f_name || prof.f_name,
-          l_name: prof_data['tLname'] || prof.l_name,
-          tid: prof_data['tid'] || prof.tid,
+          department: prof.department,
+          f_name: prof.f_name,
+          l_name: prof_data['tLname'],
+          tid: prof.tid,
           num_ratings: prof_data['tNumRatings'] || prof.num_ratings,
           rating: prof_data['overall_rating'] || prof.rating
         )
@@ -452,6 +430,31 @@ def write_in_file(file, content)
   file = File.open(file, "w")
   file.puts(content)
   file.close
+end
+
+def unconnected_profs_by_last_name
+  courses = Course.where(term: 20193)
+  professors = Prof.all.select { |prof| prof.courses.length == 0  }
+  profs = []
+  professors.each do |prof|
+    courses.all.each do |course|
+      instructor = course.instructors.split(" ")
+      next unless instructor.length > 1
+      next unless instructor[-1] == prof.l_name
+
+      profs << { prof: prof, instructor: course.instructors }
+    end
+  end
+  profs.uniq
+end
+
+unconnected_profs_by_last_name.each do |profs|
+  prof = profs[:prof]
+  instructor = profs[:instructor]
+  puts
+  puts "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+  puts instructor
+  puts
 end
 
 # connect_prof_to_courses(824678)

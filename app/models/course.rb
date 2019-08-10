@@ -27,4 +27,24 @@ class Course < ApplicationRecord
     when 5 then 'summer session 2'
     end
   end
+
+  def num_ratings
+    return profs[0]['num_ratings'] if profs[0]
+    'N/A'
+  end
+
+  def difficulty
+    return profs[0]['difficulty'] if profs[0]
+    'N/A'
+  end
+
+  def rating
+    return profs[0]['rating'] if profs[0]
+    'N/A'
+  end
+
+  def rate_my_prof_url
+    return "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=#{profs[0]['tid']}" if profs[0]
+    'N/A'
+  end
 end

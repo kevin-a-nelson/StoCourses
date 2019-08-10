@@ -62,8 +62,6 @@ class Api::CoursesController < ApplicationController
       @courses = @courses.select { |course| course.num_of_ges == params[:num_of_ges].to_i }
     end
 
-    @courses = @courses.select { |course| course.profs.length == 0 }
-
     render 'index.json.jb'
   end
 
