@@ -362,7 +362,7 @@ def init_profs
       )
 
       next if !prof.save
-      p prof.f_name
+      p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
     end
   end
 end
@@ -426,15 +426,16 @@ def unconnected_profs(term)
   courses.each do |course|
     profs.each do |prof|
       if course.instructors.match(prof.f_name) && course.instructors[-1] == prof.l_name[-1]
-        course_prof << "#{course.instructors}\t#{prof.f_name} #{prof.l_name}"
+        course_prof << "#{course.instructors}\t#{prof.f_name} #{prof.l_name} #{prof.tid}"
       end
     end
   end
   course_prof = course_prof.uniq
 end
 
-def connect_prof_to_courses(prof)
-  courses = Course.where(term: 20191)
+def connect_prof_to_courses(prof_id)
+  prof = Prof.where(tid: prof_id).first
+  courses = Course.all
   courses.all.each do |course|
     if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
       course_prof = CourseProf.new(
@@ -452,6 +453,9 @@ def write_in_file(file, content)
   file.puts(content)
   file.close
 end
+
+# connect_prof_to_courses(824678)
+# puts unconnected_profs(20191)
 
 # init_profs
 # update_profs
