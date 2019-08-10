@@ -4,6 +4,11 @@ Rails.application.routes.draw do
 
   # EXAMPLE JSON ROUTE WITH API NAMESPACE
   namespace :api do
+
+    # Profs CRUD
+    
+    get '/profs' => 'profs#index'
+
     # Users CRUD
     # resources :users
     get '/users' => 'users#index'

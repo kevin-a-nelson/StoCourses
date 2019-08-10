@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_09_210743) do
+ActiveRecord::Schema.define(version: 2019_08_09_231339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,11 +69,10 @@ ActiveRecord::Schema.define(version: 2019_08_09_210743) do
     t.string "department"
     t.string "f_name"
     t.string "l_name"
-    t.string "tid"
     t.string "num_ratings"
-    t.string "overall_ratings"
     t.string "difficulty"
     t.string "rating"
+    t.integer "tid"
   end
 
   create_table "terms", force: :cascade do |t|

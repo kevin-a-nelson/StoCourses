@@ -5,6 +5,9 @@ class Course < ApplicationRecord
   has_many :course_labs, foreign_key: :course_id, class_name: 'CourseLab'
   has_many :labs, through: :course_labs
 
+  # has_many :course_profs
+  # has_many :profs, though: :course_profs
+
   validates :clbid, uniqueness: true
 
   def formated_times

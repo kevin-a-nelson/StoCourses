@@ -403,11 +403,15 @@ def init_profs
     page_data.each do |prof_data|
       sleep(0.5)
       difficulty = scrape_difficulty(prof_data['tid'])
+
+      f_name = prof_data['tFname']
+      f_name = f_name.gsub(/\s\(\w+\)/, '') if f_name.include?('(')
+
       prof = Prof.new(
         difficulty: difficulty,
         department: prof_data['tDept'],
-        f_name: prof_data['tFname'],
-        l_name: prof_data['tFname'],
+        f_name: f_name,
+        l_name: prof_data['tLname'],
         tid: prof_data['tid'],
         num_ratings: prof_data['tNumRatings'],
         rating: prof_data['overall_rating']
@@ -418,7 +422,50 @@ def init_profs
   end
 end
 
-init_profs
+def update_profs
+  num_of_pages = num_of_prof_pages
+  (1..num_of_pages).each do |page_num|
+    puts page_num
+    page_data = profs_page_data(page_num)
+    page_profs_data = page_data['professors']
+    page_profs_data.each do |prof_data|
+      # puts 'prof JSON'
+      sleep(0.5)
+      Prof.all.each do |prof|
+        next unless prof.tid == prof_data['tid']
+
+        difficulty = scrape_difficulty(prof_data['tid'])
+
+        f_name = prof_data['tFname']
+        f_name = f_name.gsub(/\s\(\w+\)/, '') if f_name.include?('(')
+
+        prof.update(
+          difficulty: difficulty || prof.difficulty,
+          department: prof_data['tDept'] || prof.department,
+          f_name: f_name || prof.f_name,
+          l_name: prof_data['tLname'] || prof.l_name,
+          tid: prof_data['tid'] || prof.tid,
+          num_ratings: prof_data['tNumRatings'] || prof.num_ratings,
+          rating: prof_data['overall_rating'] || prof.rating
+        )
+
+        p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+      end
+    end
+  end
+end
+
+# init_profs
+# update_profs
+
+prof = Prof.second
+
+puts prof.department
+
+# prof.courses.each do |course|
+  # puts "#{course.name}: #{course.department}"
+  # puts "#{course.name}: #{course.instructors}"
+# end
 
 def write_in_file(file, content)
   file = File.open(file, "w")

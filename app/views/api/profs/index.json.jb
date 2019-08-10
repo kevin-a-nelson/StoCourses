@@ -1,0 +1,11 @@
+@profs.map do |prof|
+  {
+    department: prof.department,
+    f_name: prof.f_name,
+    l_name: prof.l_name,
+    tid: prof.tid,
+    num_ratings: prof.num_ratings,
+    difficulty: prof.difficulty,
+    rating: prof.rating
+  }
+end
