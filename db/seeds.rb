@@ -290,25 +290,6 @@ def test_courses_and_labs_links(term)
   course_and_labs = course_and_labs.uniq
 end
 
-# profs_data = JSON.parse(File.read("db/local_data/professors_data.json"))
-def init_profs(profs_data)
-  profs_data.each do |prof_data|
-    prof_name = prof_data['name']
-    middle_initial = prof_name.split(' ')[1]
-
-    if prof_name.split(' ').length == 3
-      prof_name = prof_name.gsub(/ \w /, " #{middle_initial}. ")
-    end
-    prof = Prof.new(
-      num_ratings: prof_data['num_ratings'],
-      name: prof_name,
-      rating: prof_data['rating'],
-      tid: prof_data['tid']
-    )
-    prof.save!
-  end
-end
-
 def update_profs(profs_data)
   profs_data.each do |prof_data|
     Prof.all.each do |prof|
@@ -332,11 +313,11 @@ def update_profs(profs_data)
 end
 
 def num_of_prof_pages
-  url = " "
+  url = "http://www.ratemyprofessors.com/filter/professor/?&page=1&filter=teacherlastname_sort_s+asc&query=*\%3A*&queryoption=TEACHER&queryBy=schoolId&sid=862"
   response = HTTParty.get(url)
   parsed_response = response.parsed_response
   search_results_total = parsed_response['searchResultsTotal']
-  num_of_pages = (search_results_total / 20) + 2
+  num_of_pages = (search_results_total / 20) + 1
 end
 
 def profs_page_data(page)
@@ -360,6 +341,7 @@ end
 def init_profs
   num_of_pages = num_of_prof_pages
   (1..num_of_pages).each do |page_num|
+    p page_num
     page_data = profs_page_data(page_num)
     page_data = page_data['professors']
     page_data.each do |prof_data|
@@ -379,8 +361,8 @@ def init_profs
         rating: prof_data['overall_rating']
       )
 
+      next if !prof.save
       p prof.f_name
-      prof.save!
     end
   end
 end
