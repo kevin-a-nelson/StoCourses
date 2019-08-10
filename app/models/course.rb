@@ -5,8 +5,8 @@ class Course < ApplicationRecord
   has_many :course_labs, foreign_key: :course_id, class_name: 'CourseLab'
   has_many :labs, through: :course_labs
 
-  # has_many :course_profs
-  # has_many :profs, though: :course_profs
+  has_many :course_profs
+  has_many :profs, through: :course_profs
 
   validates :clbid, uniqueness: true
 
@@ -16,14 +16,6 @@ class Course < ApplicationRecord
 
   def num_of_ges
     gereqs.split(", ").count
-  end
-
-  def profs
-    Prof.all.select { |prof| instructors.match(prof.name) }
-  end
-
-  def two_profs
-    Course.all.select { |course| course.instructors.split(",").length > 1 }
   end
 
   def semester_num_to_name

@@ -10,45 +10,6 @@ def term_data(term)
   JSON.parse(response)
 end
 
-# fall_2014 = term_data('20141')
-# interim_2014 = term_data('20142')
-# spring_2014 = term_data('20143')
-# summer_first_2014 = term_data('20144')
-# summer_second_2014 = term_data('20145')
-
-# fall_2015 = term_data('20151')
-# interim_2015 = term_data('20152')
-# spring_2015 = term_data('20153')
-# summer_first_2015 = term_data('20154')
-# summer_second_2015 = term_data('20155')
-
-# fall_2016 = term_data('20161')
-# interim_2016 = term_data('20162')
-# spring_2016 = term_data('20163')
-# summer_first_2016 = term_data('20164')
-# summer_second_2016 = term_data('20165')
-
-# fall_2017 = term_data('20171')
-# interim_2017 = term_data('20172')
-# spring_2017 = term_data('20173')
-# summer_first_2017 = term_data('20174')
-# summer_second_2017 = term_data('20175')
-
-# fall_2018 = term_data('20181')
-# interim_2018 = term_data('20182')
-# spring_2018 = term_data('20183')
-# summer_first_2018 = term_data('20184')
-# summer_second_2018 = term_data('20185')
-
-# fall_2019 = term_data('20191')
-# interim_2019 = term_data('20192')
-# spring_2019 = term_data('20193')
-
-# Not yet available
-
-# summer_first_2019 = term_data(year: '2019', semester: '4')
-# summer_second_2019 = term_data(year: '2019', semester: '5')
-
 def arr_to_clean_str(arr)
   arr = arr.to_s
   arr.gsub(/[\"\[\]\\]/, '')
@@ -240,8 +201,8 @@ def create_course(course)
   new_course.save!
 end
 
-def update_courses(year_and_semester)
-  api_courses = term_data(year_and_semester)
+def update_courses(term)
+  api_courses = term_data(term)
 
   api_courses.each do |api_course|
     clsid = api_course['clbid']
@@ -288,6 +249,7 @@ def update_course(course, updated_course)
 end
 
 def init_term(term)
+  term = term_data(term)
   term.each do |course|
     # p course['name']
     create_course(course)
@@ -370,11 +332,11 @@ def update_profs(profs_data)
 end
 
 def num_of_prof_pages
-  url = "http://www.ratemyprofessors.com/filter/professor/?&page=1&filter=teacherlastname_sort_s+asc&query=*\%3A*&queryoption=TEACHER&queryBy=schoolId&sid=862"
+  url = " "
   response = HTTParty.get(url)
   parsed_response = response.parsed_response
   search_results_total = parsed_response['searchResultsTotal']
-  num_of_pages = search_results_total / 20
+  num_of_pages = (search_results_total / 20) + 2
 end
 
 def profs_page_data(page)
@@ -416,6 +378,7 @@ def init_profs
         num_ratings: prof_data['tNumRatings'],
         rating: prof_data['overall_rating']
       )
+
       p prof.f_name
       prof.save!
     end
@@ -455,17 +418,52 @@ def update_profs
   end
 end
 
-# init_profs
-# update_profs
+def link_profs_to_courses
+  Prof.all.each do |prof|
+    Course.all.each do |course|
+      if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
+        course_prof = CourseProf.new(
+          prof_id: prof.id,
+          course_id: course.id
+        )
+        course_prof.save!
+        puts "Match! #{prof.id} : #{course.id}"
+      end
+    end
+  end
+end
 
-prof = Prof.second
+def unconnected_profs(term)
+  courses = Course.where(term: term)
 
-puts prof.department
+  courses = courses.all.select { |course| course.profs.length == 0 }
 
-# prof.courses.each do |course|
-  # puts "#{course.name}: #{course.department}"
-  # puts "#{course.name}: #{course.instructors}"
-# end
+  profs = Prof.all.select { |prof| prof.courses.length == 0 }
+
+  course_prof = []
+  courses.each do |course|
+    profs.each do |prof|
+      if course.instructors.match(prof.f_name) && course.instructors[-1] == prof.l_name[-1]
+        course_prof << "#{course.instructors}\t#{prof.f_name} #{prof.l_name}"
+      end
+    end
+  end
+  course_prof = course_prof.uniq
+end
+
+def connect_prof_to_courses(prof)
+  courses = Course.where(term: 20191)
+  courses.all.each do |course|
+    if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
+      course_prof = CourseProf.new(
+        prof_id: prof.id,
+        course_id: course.id
+      )
+      course_prof.save!
+      puts "Match! #{prof.id} : #{course.id}"
+    end
+  end
+end
 
 def write_in_file(file, content)
   file = File.open(file, "w")
@@ -473,25 +471,13 @@ def write_in_file(file, content)
   file.close
 end
 
-# {
-# 'tDept': 'Mathematics',
-# 'tSid': '862',
-# 'institution_name': 'St. Olaf College',
-# 'tFname': 'Adam',
-# 'tMiddlename': '',
-# 'tLname': 'Berliner',
-# 'tid': 1405645,
-# 'tNumRatings': 16,
-# 'rating_class': 'good',
-# 'contentType': 'TEACHER',
-# 'categoryType': 'PROFESSOR',
-# 'overall_rating': '4.8'
-# }
+# init_profs
+# update_profs
 
-# init_term(summer_second_2017)
-# link_courses_and_labs(20192)
-# test_courses_and_labs_links(20192)
-# update_courses(year: '2019', semester: '1')
+# init_term(20191)
+# link_courses_and_labs(20191)
+# test_courses_and_labs_links(20191)
+# update_courses(20191)
 
 # init_profs(profs_data)
 # update_profs(profs_data)

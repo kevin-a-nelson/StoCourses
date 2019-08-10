@@ -1,0 +1,2 @@
+class AddIdsToCourseProf < ApplicationRecord
+end
