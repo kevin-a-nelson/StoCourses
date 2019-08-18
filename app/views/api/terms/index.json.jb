@@ -1,10 +1,28 @@
 @terms.map do |term|
   {
+    user_id: term.user_id,
     id: term.id,
     year: term.year,
     semester: term.semester_num_to_name,
     terms: term.term,
     order: term.order,
-    courses: term.courses
+    courses: term.courses.map do |course|
+      {
+        id: course.id,
+        status: course.status,
+        name: course.name,
+        level: course.level,
+        department: course.department,
+        number: course.number,
+        section: course.section,
+        gereqs: course.gereqs,
+        days: course.days,
+        times: course.formatted_times,
+        prof: course.instructors,
+        rating: course.rating_int,
+        difficulty: course.difficulty_int,
+        reviews: course.num_ratings,
+      }
+    end
   }
 end
