@@ -27,7 +27,7 @@ class Api::UsersController < ApplicationController
         5.times do |semester|
           semester += 1
           term = "#{year}#{semester}"
-          1.times do |order|
+          5.times do |order|
             order += 1
             Term.create(
               year: year,

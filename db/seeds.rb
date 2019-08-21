@@ -211,6 +211,7 @@ def update_courses(term)
     if !db_course.empty?
       api_course = parse_course(api_course)
       update_course(db_course, api_course)
+      puts db_course.name
     else
       create_course(api_course)
     end
@@ -272,6 +273,7 @@ def link_courses_and_labs(term)
 
       next if course['department'] != lab['department']
       next if course['number'] != lab['number']
+
       CourseLab.create(course_id: course.id, lab_id: lab.id)
     end
   end
@@ -448,15 +450,6 @@ def unconnected_profs_by_last_name
   profs.uniq
 end
 
-unconnected_profs_by_last_name.each do |profs|
-  prof = profs[:prof]
-  instructor = profs[:instructor]
-  puts
-  puts "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
-  puts instructor
-  puts
-end
-
 # connect_prof_to_courses(824678)
 # puts unconnected_profs(20191)
 
@@ -466,7 +459,7 @@ end
 # init_term(20191)
 # link_courses_and_labs(20191)
 # test_courses_and_labs_links(20191)
-# update_courses(20191)
+update_courses(20193)
 
 # init_profs(profs_data)
 # update_profs(profs_data)

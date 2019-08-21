@@ -12,16 +12,20 @@
         status: course.status,
         name: course.name,
         level: course.level,
-        department: course.department,
-        number: course.number,
-        section: course.section,
+        dept_num_sec: course.dept_num_sec,
         gereqs: course.gereqs,
         days: course.days,
-        times: course.formatted_times,
+        times: course.times,
         prof: course.instructors,
         rating: course.rating_int,
         difficulty: course.difficulty_int,
-        reviews: course.num_ratings,
+        reviews: course.num_reviews,
+        description: course.description,
+        prerequisites: course.prerequisites,
+        has_prereqs: course.has_prereqs,
+        num_of_ges: course.num_of_ges,
+        notes: course.notes,
+        prof_url: course.rate_my_prof_url
       }
     end
   }

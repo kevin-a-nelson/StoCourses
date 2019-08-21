@@ -10,9 +10,10 @@ class Api::CourseTermsController < ApplicationController
   end
 
   def create
+    term_id = current_user.terms.where(term: params[:term]).where(order: params[:order]).first.id
     @course_term = CourseTerm.new(
       course_id: params[:course_id],
-      term_id: params[:term_id]
+      term_id: term_id
     )
 
     if @course_term.save
@@ -33,10 +34,9 @@ class Api::CourseTermsController < ApplicationController
   end
 
   def destroy
-    if params[:id]
-      @course_term = CourseTerm.find_by_id(params[:id])
-    elsif params[:course_id] && params[:term_id]
-      @course_term = CourseTerm.where(term_id: params[:term_id]).where(course_id: params[:course_id]).limit(1)
+    term_id = current_user.terms.where(term: params[:term]).where(order: params[:order]).first.id
+    if params[:course_id] && term_id
+      @course_term = CourseTerm.where(term_id: term_id).where(course_id: params[:course_id]).limit(1)
     end
 
     @course_term = @course_term[0]

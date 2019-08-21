@@ -13,26 +13,12 @@ def courses
       rating: course.rating_int,
       difficulty: course.difficulty_int,
       reviews: course.num_reviews,
-      # number: course.number,
-      # clbid: course.clbid,
-      # crsid: course.crsid,
-      # id: course.id,
-      # seats: course.seats,
-      # num_of_ges: course.num_of_ges,
-      # credits: course.credits,
-      # location: course.location,
-      # enrolled: course.enrolled,
-      # max: course.max,
-      # semester: course.semester_num_to_name,
-      # term: course.term,
-      # year: course.year,
       description: course.description,
       prerequisites: course.prerequisites,
       has_prereqs: course.has_prereqs,
       num_of_ges: course.num_of_ges,
-      notes: course.notes
-      # course_type: course.course_type,
-      # prof_url: course.rate_my_prof_url
+      notes: course.notes,
+      prof_url: course.rate_my_prof_url
     }
   end
 end
