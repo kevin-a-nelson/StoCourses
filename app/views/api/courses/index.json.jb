@@ -14,7 +14,7 @@ def courses
       difficulty: course.difficulty_int,
       reviews: course.num_reviews,
       description: course.description,
-      prerequisites: course.prerequisites,
+      prereqs: course.prerequisites,
       has_prereqs: course.has_prereqs,
       num_of_ges: course.num_of_ges,
       notes: course.notes,

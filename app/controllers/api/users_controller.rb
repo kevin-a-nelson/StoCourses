@@ -21,9 +21,8 @@ class Api::UsersController < ApplicationController
     )
 
     if user.save
-      enrollment_year = params[:enrollment_year].to_i
-      5.times do |year|
-        year = enrollment_year + year
+      10.times do |year|
+        year = 2015 + year
         5.times do |semester|
           semester += 1
           term = "#{year}#{semester}"
