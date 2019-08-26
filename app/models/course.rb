@@ -14,8 +14,24 @@ class Course < ApplicationRecord
     "#{department} #{number}#{section}"
   end
 
+  def rating_difference_reviews
+    "#{rating_int} / #{difficulty_int} / #{num_reviews}"
+  end
+
   def num_of_ges
     gereqs.split(', ').count
+  end
+
+  def description_or_none
+    description.empty? ? 'none' : description
+  end
+
+  def prereqs_or_none
+    prerequisites.empty? || prerequisites == 'f' ? 'none' : prerequisites
+  end
+
+  def notes_or_none
+    notes.empty? ? 'none' : notes
   end
 
   def num_reviews

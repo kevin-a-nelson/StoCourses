@@ -9,10 +9,14 @@
     courses: term.courses.map do |course|
       {
         id: course.id,
+        credits: course.credits,
         status: course.status,
         name: course.name,
         level: course.level,
         dept_num_sec: course.dept_num_sec,
+        dept: course.department,
+        num: course.number,
+        sec: course.section,
         gereqs: course.gereqs,
         days: course.days,
         times: course.times,
@@ -20,11 +24,12 @@
         rating: course.rating_int,
         difficulty: course.difficulty_int,
         reviews: course.num_reviews,
-        description: course.description,
-        prerequisites: course.prerequisites,
+        rating_difference_reviews: course.rating_difference_reviews,
+        description: course.description_or_none,
+        prereqs: course.prereqs_or_none,
         has_prereqs: course.has_prereqs,
         num_of_ges: course.num_of_ges,
-        notes: course.notes,
+        notes: course.notes_or_none,
         prof_url: course.rate_my_prof_url
       }
     end

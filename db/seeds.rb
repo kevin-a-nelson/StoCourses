@@ -455,11 +455,10 @@ end
 
 # init_profs
 # update_profs
-
-# init_term(20191)
+init_term(20191)
 # link_courses_and_labs(20191)
 # test_courses_and_labs_links(20191)
-update_courses(20193)
+# update_courses(20155)
 
 # init_profs(profs_data)
 # update_profs(profs_data)
