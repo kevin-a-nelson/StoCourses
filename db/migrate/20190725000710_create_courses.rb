@@ -1,8 +1,7 @@
 class CreateCourses < ActiveRecord::Migration[6.0]
   def change
-    create_table :courses do |t|
+    # create_table :courses do |t|
 
-      t.timestamps
-    end
+      # t.timestamps
   end
 end
