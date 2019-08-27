@@ -14,6 +14,10 @@ class Course < ApplicationRecord
     "#{department} #{number}#{section}"
   end
 
+  def dash_if_empty(attribute)
+    attribute.to_s.length.zero? ? '---' : attribute
+  end
+
   def rating_difference_reviews
     "#{rating_int} / #{difficulty_int} / #{num_reviews}"
   end
