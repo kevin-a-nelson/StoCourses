@@ -169,6 +169,7 @@ def parse_course(course)
 end
 
 def create_course(course)
+  puts course.name
   parsed_course = parse_course(course)
   new_course = Course.new(
     clbid: parsed_course[:clbid],
@@ -211,7 +212,6 @@ def update_courses(term)
     if !db_course.empty?
       api_course = parse_course(api_course)
       update_course(db_course, api_course)
-      puts db_course.name
     else
       create_course(api_course)
     end
@@ -382,14 +382,35 @@ end
 
 def link_profs_to_courses
   Prof.all.each do |prof|
+    puts prof.f_name
     Course.all.each do |course|
+      next if prof.courses.include?(course)
+
       if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
         course_prof = CourseProf.new(
           prof_id: prof.id,
           course_id: course.id
         )
-        course_prof.save!
-        puts "Match! #{prof.id} : #{course.id}"
+        !course_prof.save
+        puts "Match! #{prof.name} : #{course.name}"
+      end
+    end
+  end
+end
+
+def link_unlinked_profs_to_courses
+  profs = Prof.all.select { |prof| prof.courses.empty? }
+  profs.each do |prof|
+    puts prof.full_name
+    Course.all.each do |course|
+      next if prof.courses.include?(course)
+      if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
+        course_prof = CourseProf.new(
+          prof_id: prof.id,
+          course_id: course.id
+        )
+        !course_prof.save
+        puts "Match! #{prof.full_name} : #{course.name}"
       end
     end
   end
@@ -423,7 +444,7 @@ def connect_prof_to_courses(prof_id)
         course_id: course.id
       )
       course_prof.save!
-      puts "Match! #{prof.id} : #{course.id}"
+      puts "Match! #{prof.name} : #{course.name}"
     end
   end
 end
@@ -455,10 +476,33 @@ end
 
 # init_profs
 # update_profs
-init_term(20191)
+# link_profs_to_courses
+# link_unlinked_profs_to_courses
+# init_term(20191)
+# update_courses(20192)
 # link_courses_and_labs(20191)
 # test_courses_and_labs_links(20191)
-# update_courses(20155)
 
-# init_profs(profs_data)
-# update_profs(profs_data)
+def get_input
+  puts 'What function would you like to run?'
+  puts 'init_profs'
+  puts 'update_profs'
+  puts 'link_profs_to_courses'
+  puts 'link_unlinked_profs_to_courses'
+  puts 'init_term(term)'
+  puts 'update_courses(term)'
+end
+
+def run_function
+  arg = ENV['arg'].to_i
+  case ENV['function']
+  when 'init_profs' then init_profs
+  when 'update_profs' then update_profs
+  when 'link_profs_to_courses' then link_profs_to_courses
+  when 'link_unlinked_profs_to_courses' then link_unlinked_profs_to_courses
+  when 'init_term' then init_term(arg)
+  when 'update_courses' then update_courses(arg)
+  end
+end
+
+run_function

@@ -5,7 +5,7 @@ def courses
       credits: course.dash_if_empty(course.credits),
       seats: course.dash_if_empty(course.seats),
       status: course.dash_if_empty(course.status),
-      name: course.dash_if_empty(course.name),
+      name: course.dash_if_empty(course.replaced_name),
       level: course.dash_if_empty(course.level),
       dept_num_sec: course.dash_if_empty(course.dept_num_sec),
       dept: course.dash_if_empty(course.department),
@@ -24,7 +24,7 @@ def courses
       has_prereqs: course.dash_if_empty(course.has_prereqs),
       num_of_ges: course.dash_if_empty(course.num_of_ges),
       notes: course.dash_if_empty(course.notes_or_none),
-      prof_url: course.dash_if_empty(course.rate_my_prof_url),
+      prof_url: course.rate_my_prof_url,
     }
   end
 end

@@ -14,8 +14,16 @@ class Course < ApplicationRecord
     "#{department} #{number}#{section}"
   end
 
+  def get_name
+    name
+  end
+
+  def replaced_name
+    name.include?('/') ? name.gsub('/', ' / ') : name
+  end
+
   def dash_if_empty(attribute)
-    attribute.to_s.length.zero? ? '---' : attribute
+    attribute.to_s.length === 0 ? '---' : attribute
   end
 
   def rating_difference_reviews
