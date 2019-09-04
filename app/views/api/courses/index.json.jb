@@ -10,7 +10,7 @@ def courses
       dept_num_sec: course.dash_if_empty(course.dept_num_sec),
       dept: course.dash_if_empty(course.department),
       num: course.dash_if_empty(course.number),
-      sec: course.dash_if_empty(course.section),
+      sec: course.section,
       gereqs: course.dash_if_empty(course.gereqs),
       days: course.dash_if_empty(course.days),
       times: course.dash_if_empty(course.times),
