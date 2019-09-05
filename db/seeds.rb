@@ -169,7 +169,7 @@ def parse_course(course)
 end
 
 def create_course(course)
-  puts course.name
+  puts course['name']
   parsed_course = parse_course(course)
   new_course = Course.new(
     clbid: parsed_course[:clbid],
@@ -219,6 +219,7 @@ def update_courses(term)
 end
 
 def update_course(course, updated_course)
+  puts updated_course[:name]
   course.update(
     clbid: updated_course[:clbid],
     credits: updated_course[:credits],
@@ -341,8 +342,11 @@ def init_profs
         rating: prof_data['overall_rating']
       )
 
-      next if !prof.save
-      p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+      if prof.save
+        p "### New Prof! #{prof.f_name} #{prof.l_name}: #{prof.tid} ###"
+      else
+        p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+      end
     end
   end
 end
@@ -392,7 +396,7 @@ def link_profs_to_courses
           course_id: course.id
         )
         !course_prof.save
-        puts "Match! #{prof.name} : #{course.name}"
+        puts "Match! #{prof.full_name} : #{course.name}"
       end
     end
   end
