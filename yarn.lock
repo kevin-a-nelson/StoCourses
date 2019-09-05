@@ -6923,6 +6923,11 @@ vue2-filters@^0.7.0:
   resolved "https://registry.yarnpkg.com/vue2-filters/-/vue2-filters-0.7.0.tgz#76ca2b92531bd1e8a79be7afb3551aa270f103ea"
   integrity sha512-T6d+CN8oJuRY/hlOALI+iptFmTuqNPVL5cMU56cLho487WySOxVUfKa3FqRS2aF4Pt4RgSwSN8WlN3GF07aTkw==
 
+vue2-smooth-scroll@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue2-smooth-scroll/-/vue2-smooth-scroll-1.1.0.tgz#892aa4ea3653f7c6e1f31b1af32c9a736588b1b8"
+  integrity sha512-3le4wHeeEYVY+UekAYtuqFIidtjUd+6VFyLcCtbT3S26u62bEuT8qHFZ7zNJ4LjiMQMOb7eiBMKtBT7Y0EWj6g==
+
 watchpack@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
