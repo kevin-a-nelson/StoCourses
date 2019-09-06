@@ -169,7 +169,7 @@ def parse_course(course)
 end
 
 def create_course(course)
-  puts course.name
+  puts course['name']
   parsed_course = parse_course(course)
   new_course = Course.new(
     clbid: parsed_course[:clbid],
@@ -219,6 +219,7 @@ def update_courses(term)
 end
 
 def update_course(course, updated_course)
+  puts updated_course[:name]
   course.update(
     clbid: updated_course[:clbid],
     credits: updated_course[:credits],
@@ -341,8 +342,11 @@ def init_profs
         rating: prof_data['overall_rating']
       )
 
-      next if !prof.save
-      p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+      if prof.save
+        p "### New Prof! #{prof.f_name} #{prof.l_name}: #{prof.tid} ###"
+      else
+        p "#{prof.f_name} #{prof.l_name}: #{prof.tid}"
+      end
     end
   end
 end
@@ -380,10 +384,11 @@ def update_profs
   end
 end
 
-def link_profs_to_courses
+def link_profs_to_courses(input_term)
+  courses = Course.where(term: input_term)
   Prof.all.each do |prof|
     puts prof.f_name
-    Course.all.each do |course|
+    courses.all.each do |course|
       next if prof.courses.include?(course)
 
       if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
@@ -392,7 +397,7 @@ def link_profs_to_courses
           course_id: course.id
         )
         !course_prof.save
-        puts "Match! #{prof.name} : #{course.name}"
+        puts "Match! #{prof.full_name} : #{course.name}"
       end
     end
   end
@@ -498,10 +503,18 @@ def run_function
   case ENV['function']
   when 'init_profs' then init_profs
   when 'update_profs' then update_profs
-  when 'link_profs_to_courses' then link_profs_to_courses
+  when 'link_profs_to_courses' then link_profs_to_courses(arg)
   when 'link_unlinked_profs_to_courses' then link_unlinked_profs_to_courses
   when 'init_term' then init_term(arg)
   when 'update_courses' then update_courses(arg)
+  else puts "#{ENV['function']} is a invalid function"
+       puts "The avaiable functions are"
+       puts "function=init_profs"
+       puts "function=update_profs"
+       puts "function=link_profs_to_courses arg=20191"
+       puts "link_unlinked_profs_to_courses"
+       puts "function=init_term arg=20191"
+       puts "function=update_courses arg=20191"
   end
 end
 
