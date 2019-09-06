@@ -384,10 +384,11 @@ def update_profs
   end
 end
 
-def link_profs_to_courses
+def link_profs_to_courses(input_term)
+  courses = Course.where(term: input_term)
   Prof.all.each do |prof|
     puts prof.f_name
-    Course.all.each do |course|
+    courses.all.each do |course|
       next if prof.courses.include?(course)
 
       if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
@@ -502,10 +503,18 @@ def run_function
   case ENV['function']
   when 'init_profs' then init_profs
   when 'update_profs' then update_profs
-  when 'link_profs_to_courses' then link_profs_to_courses
+  when 'link_profs_to_courses' then link_profs_to_courses(arg)
   when 'link_unlinked_profs_to_courses' then link_unlinked_profs_to_courses
   when 'init_term' then init_term(arg)
   when 'update_courses' then update_courses(arg)
+  else puts "#{ENV['function']} is a invalid function"
+       puts "The avaiable functions are"
+       puts "function=init_profs"
+       puts "function=update_profs"
+       puts "function=link_profs_to_courses arg=20191"
+       puts "link_unlinked_profs_to_courses"
+       puts "function=init_term arg=20191"
+       puts "function=update_courses arg=20191"
   end
 end
 
