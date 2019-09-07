@@ -476,6 +476,34 @@ def unconnected_profs_by_last_name
   profs.uniq
 end
 
+def init_all_terms
+  [ 20151, 20152, 20153, 20154, 20515 ].each { |term| init_term(term) }
+  [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
+  [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
+  [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
+  [ 20171, 20172, 20173, 20174, 20175 ].each { |term| init_term(term) }
+  [ 20181, 20182, 20183, 20184, 20185 ].each { |term| init_term(term) }
+  [ 20191, 20192, 20193, 20194, 20195 ].each { |term| init_term(term) }
+end
+
+def link_all_profs_to_courses
+  Prof.all.each do |prof|
+    puts prof.f_name
+    Course.all.each do |course|
+      next if prof.courses.include?(course)
+
+      if course.instructors.match(prof.f_name) && course.instructors.match(prof.l_name)
+        course_prof = CourseProf.new(
+          prof_id: prof.id,
+          course_id: course.id
+        )
+        !course_prof.save
+        puts "Match! #{prof.full_name} : #{course.name}"
+      end
+    end
+  end
+end
+
 # connect_prof_to_courses(824678)
 # puts unconnected_profs(20191)
 
@@ -506,6 +534,8 @@ def run_function
   when 'link_profs_to_courses' then link_profs_to_courses(arg)
   when 'link_unlinked_profs_to_courses' then link_unlinked_profs_to_courses
   when 'init_term' then init_term(arg)
+  when 'link_all_profs_to_courses' then link_all_profs_to_courses
+  when 'init_all_terms' then init_all_terms
   when 'update_courses' then update_courses(arg)
   else puts "#{ENV['function']} is a invalid function"
        puts "The avaiable functions are"
@@ -513,7 +543,9 @@ def run_function
        puts "function=update_profs"
        puts "function=link_profs_to_courses arg=20191"
        puts "link_unlinked_profs_to_courses"
+       puts "link_all_profs_to_courses"
        puts "function=init_term arg=20191"
+       puts "function=init_all_terms"
        puts "function=update_courses arg=20191"
   end
 end
