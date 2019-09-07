@@ -477,13 +477,11 @@ def unconnected_profs_by_last_name
 end
 
 def init_all_terms
-  [ 20151, 20152, 20153, 20154, 20515 ].each { |term| init_term(term) }
-  [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
-  [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
+  [ 20151, 20152, 20153, 20154, 20155 ].each { |term| init_term(term) }
   [ 20161, 20162, 20163, 20164, 20165 ].each { |term| init_term(term) }
   [ 20171, 20172, 20173, 20174, 20175 ].each { |term| init_term(term) }
   [ 20181, 20182, 20183, 20184, 20185 ].each { |term| init_term(term) }
-  [ 20191, 20192, 20193, 20194, 20195 ].each { |term| init_term(term) }
+  [ 20191, 20192, 20193 ].each { |term| init_term(term) }
 end
 
 def link_all_profs_to_courses
