@@ -11,7 +11,7 @@
     "package": "^1.0.1",
     "vue2-filters": "^0.7.0",
     "vue2-smooth-scroll": "^1.1.0",
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   },
   "version": "0.1.0",
   "devDependencies": {
