@@ -6,7 +6,7 @@
     "@rails/activestorage": "^6.0.0-alpha",
     "@rails/ujs": "^6.0.0-alpha",
     "@rails/webpacker": "^4.0.7",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "material-design-icons": "^3.0.1",
     "package": "^1.0.1",
     "vue2-filters": "^0.7.0",
